@@ -3,21 +3,6 @@ name: ecosystem-analysis
 description: "Use when auditing Claude Code plugin configurations, finding integration opportunities between skills/agents/MCP/hooks, discovering what components exist, or generating optimization reports. Triggers: audit ecosystem, optimize config, integration gaps, what exists, component inventory, missing hooks"
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "hooks/scripts/validate-safe-commands.sh"
-  PostToolUse:
-    - matcher: "Read"
-      hooks:
-        - type: command
-          command: "hooks/scripts/log-discovery.sh"
-  Stop:
-    - hooks:
-        - type: command
-          command: "hooks/scripts/generate-report.sh"
 ---
 
 # Ecosystem Analysis Skill

@@ -18,7 +18,5 @@
     "tdd",
     "audit",
     "validation"
-  ],
-  "settings": "./settings.json",
-  "hooksConfig": "../hooks/hooks-config.json"
+  ]
 }

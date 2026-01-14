@@ -3,3 +3,29 @@ __pycache__/
 .DS_Store
 *.local.json
 *.mcp.json
+
+# Claude Code local files
+*.local.md
+.claude/settings.local.json
+.claude/hooks/logs/
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# OS
+Thumbs.db
