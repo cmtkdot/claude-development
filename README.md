@@ -48,26 +48,39 @@ plugin-dev/
 ├── .claude-plugin/
 │   ├── plugin.json           # Plugin manifest
 │   ├── settings.json         # Hook configuration
-│   └── commands/             # 8 slash commands
-├── agents/                   # 8 specialized agents
-│   ├── skill-creator.md
-│   ├── agent-creator.md
-│   ├── hook-creator.md
-│   ├── skill-auditor.md
-│   ├── subagent-auditor.md
-│   ├── slash-command-auditor.md
-│   ├── workflow-auditor.md
-│   └── skill-router.md
-├── skills/
-│   ├── writing-skills/       # TDD for documentation
-│   ├── hook-development/     # 6-phase hook workflow
-│   ├── create-hook-structure/# Scaffold hooks directory
-│   └── ecosystem-analysis/   # Integration analysis
-└── hooks/
-    └── scripts/              # Validation scripts
-        ├── skill-tools/
-        ├── agent-tools/
-        └── hook-tools/
+│   ├── CLAUDE.md             # Plugin context
+│   ├── commands/             # 9 slash commands
+│   │   ├── agent-development.md
+│   │   ├── command-development.md
+│   │   ├── create-plugin.md
+│   │   ├── hook-development.md
+│   │   ├── mcp-integration.md
+│   │   ├── plugin-settings.md
+│   │   ├── plugin-structure.md
+│   │   ├── skill-development.md
+│   │   └── prime-claude-development.md
+│   ├── agents/               # 8 specialized agents
+│   │   ├── skill-creator.md
+│   │   ├── agent-creator.md
+│   │   ├── hook-creator.md
+│   │   ├── skill-auditor.md
+│   │   ├── subagent-auditor.md
+│   │   ├── slash-command-auditor.md
+│   │   ├── workflow-auditor.md
+│   │   └── skill-router.md
+│   ├── skills/               # 4 development skills
+│   │   ├── writing-skills/
+│   │   ├── hook-development/
+│   │   ├── create-hook-structure/
+│   │   └── ecosystem-analysis/
+│   └── hooks/                # Validation scripts
+│       └── scripts/
+│           ├── skill-tools/
+│           ├── agent-tools/
+│           └── hook-tools/
+├── README.md
+├── LICENSE
+└── CONTRIBUTING.md
 ```
 
 ## Agents
@@ -133,11 +146,11 @@ The plugin includes automatic validation:
 ```bash
 # Test skill validation
 echo '{"tool": "Write", "file_path": "test/SKILL.md"}' | \
-  python3 hooks/scripts/skill-tools/validate-skill-metadata.py
+  python3 .claude-plugin/hooks/scripts/skill-tools/validate-skill-metadata.py
 
 # Test agent validation
 echo '{"tool": "Write", "file_path": "agents/test.md"}' | \
-  bash hooks/scripts/agent-tools/validate-agent.sh
+  bash .claude-plugin/hooks/scripts/agent-tools/validate-agent.sh
 ```
 
 ## Requirements
