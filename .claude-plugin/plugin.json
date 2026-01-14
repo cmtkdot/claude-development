@@ -8,13 +8,7 @@
   },
   "repository": "https://github.com/cmtkdot/claude-development-plugin",
   "homepage": "https://github.com/cmtkdot/claude-development-plugin#readme",
-  "bugs": "https://github.com/cmtkdot/claude-development-plugin/issues",
   "license": "MIT",
-  "categories": [
-    "development-tools",
-    "productivity",
-    "quality-assurance"
-  ],
   "keywords": [
     "claude-code",
     "plugin-development",
@@ -25,8 +19,5 @@
     "tdd",
     "audit",
     "validation"
-  ],
-  "engines": {
-    "claude-code": ">=1.0.0"
-  }
+  ]
 }
