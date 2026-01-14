@@ -1,5 +1,5 @@
 ---
-description: This skill should be used when the user asks to "add MCP server", "integrate MCP", "configure MCP in plugin", "use .mcp.json", "set up Model Context Protocol", "connect external service", mentions "${CLAUDE_PLUGIN_ROOT} with MCP", or discusses MCP server types (SSE, stdio, HTTP, WebSocket). Provides comprehensive guidance for integrating Model Context Protocol servers into Claude Code plugins for external tool and service integration.
+description: Integrate MCP servers into Claude Code plugins for external tool access
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 argument-hint: "<mcp-server-name> [server-type]"
 ---
