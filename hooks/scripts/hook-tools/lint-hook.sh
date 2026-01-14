@@ -6,8 +6,8 @@ set -euo pipefail
 INPUT=$(cat)
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 
-# Only process hook scripts in .claude/hooks/scripts/
-if [[ ! "$FILE_PATH" =~ \.claude/hooks/scripts/.+\.(sh|py|cjs)$ ]]; then
+# Only process hook scripts in hooks/scripts/ or .claude/hooks/scripts/
+if [[ ! "$FILE_PATH" =~ hooks/scripts/.+\.(sh|py|cjs)$ ]]; then
     exit 0
 fi
 

@@ -113,9 +113,44 @@ Use `command` for dynamic context.
 | `skill-creator` | writing-skills |
 | `skill-router` | writing-skills, ecosystem-analysis, hook-development |
 | `workflow-auditor` | ecosystem-analysis, writing-skills |
-| `skill-auditor` | (read-only, no skills) |
-| `subagent-auditor` | (read-only, no skills) |
-| `slash-command-auditor` | (read-only, no skills) |
+| `skill-auditor` | writing-skills, ecosystem-analysis |
+| `subagent-auditor` | writing-skills, ecosystem-analysis |
+| `slash-command-auditor` | writing-skills |
+
+---
+
+## Audit Workflow
+
+Use the auditors to validate existing components:
+
+```
+1. AUDIT COMPONENTS (parallel)
+   └─ Task({ subagent_type: "skill-auditor", prompt: "Audit all skills in skills/" })
+   └─ Task({ subagent_type: "subagent-auditor", prompt: "Audit all agents in agents/" })
+   └─ Task({ subagent_type: "slash-command-auditor", prompt: "Audit all commands in commands/" })
+
+2. ARCHITECTURE REVIEW
+   └─ Task({ subagent_type: "workflow-auditor", prompt: "Review plugin architecture" })
+
+3. FIND GAPS
+   └─ Task({ subagent_type: "skill-router", prompt: "Find integration gaps" })
+
+4. IMPLEMENT FIXES
+   └─ Use creator agents to fix issues found
+```
+
+### Validation Hooks (Auto-Enabled)
+
+When plugin-dev is installed, these hooks run automatically:
+
+| Event | Hook | Purpose |
+|-------|------|---------|
+| PreToolUse | validate-skill-metadata.py | Block invalid SKILL.md writes |
+| PreToolUse | validate-agent.sh | Block invalid agent writes |
+| PostToolUse | lint-skill.sh | Quality warnings for skills |
+| PostToolUse | lint-agent.sh | Quality warnings for agents |
+| PostToolUse | lint-hook.sh | Quality warnings for hooks |
+| Stop | *-audit-report.sh | Session summaries |
 
 ---
 

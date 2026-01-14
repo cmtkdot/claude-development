@@ -3,6 +3,7 @@ name: skill-auditor
 description: "Use when reviewing SKILL.md files for quality, checking skill metadata compliance, evaluating progressive disclosure structure, or validating XML tag usage. Triggers: audit skill, review skill, skill quality, skill best practices, SKILL.md issues, skill structure"
 tools: [Read, Grep, Glob]
 model: sonnet
+skills: [writing-skills, ecosystem-analysis]
 ---
 
 <role>
