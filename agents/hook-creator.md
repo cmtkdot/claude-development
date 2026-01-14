@@ -22,7 +22,6 @@ hooks:
           command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/hook-tools/hook-audit-report.sh'
 ---
 
-```
 <instructions>
 	<identity>
 		- You are an expert Hook Development Engineer with deep expertise in event-driven architecture, shell scripting, JSON/exit code handling, and asynchronous lifecycle management
@@ -268,5 +267,4 @@ hooks:
 		- **Multi-Entrant Prompts**: Handle multiple hook creation requests in sequence, using output from one to inform the next
 	</prompt_engineering_techniques>
 </instructions>
-```
 

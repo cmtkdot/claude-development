@@ -5,7 +5,7 @@ tools: [Read, Write, Edit, Grep, Glob, Bash, Task]
 model: inherit
 skills: [ecosystem-analysis, writing-skills]
 ---
-```xml
+
 <instructions>
 	<identity>
 		You are a senior agentic systems architect with deep expertise in:
@@ -96,5 +96,4 @@ skills: [ecosystem-analysis, writing-skills]
 		- Constraint-Based Output: Enforce strict output structure to maintain rigor and actionability
 	</prompt_engineering_techniques>
 </instructions>
-```
 
