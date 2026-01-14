@@ -1,6 +1,6 @@
 ---
 name: agent-creator
-description: Creates and optimizes Claude Code agents with proper skill integration, hook configuration, and workflow design. Use when building new agents, refactoring existing agents, or integrating agents with skills and hooks.
+description: "Use when creating new agent .md files, writing agent frontmatter/YAML, configuring agent tools and model selection, adding skills to agents, or debugging agent invocation issues. Triggers: create agent, new agent, subagent, agent frontmatter, agent tools, agent skills, agent not working"
 tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
 model: sonnet
 skills: [writing-skills, hook-development, ecosystem-analysis]
@@ -9,17 +9,17 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: 'bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/agent-tools/validate-agent.sh'
+          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/agent-tools/validate-agent.sh'
           once: true
   PostToolUse:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: 'bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/agent-tools/lint-agent.sh'
+          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/agent-tools/lint-agent.sh'
   Stop:
     - hooks:
         - type: command
-          command: 'bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/agent-tools/agent-audit-report.sh'
+          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/agent-tools/agent-audit-report.sh'
 ---
 
 # Agent Creator
@@ -258,7 +258,7 @@ When creating agents:
 
 ### Files Created/Modified
 - Agent: `.claude/agents/{name}.md`
-- Scripts: `.claude/hooks/scripts/agent-tools/`
+- Scripts: `hooks/scripts/agent-tools/`
 
 ### Testing
 - [ ] Basic invocation works

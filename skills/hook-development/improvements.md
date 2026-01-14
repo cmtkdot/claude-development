@@ -1,7 +1,7 @@
 ---
 # Updated Hook Development Skill
 
-Save as `.claude/skills/hook-development/SKILL.md`
+Save as `skills/hook-development/SKILL.md`
 
 ````markdown
 ---
@@ -1469,7 +1469,7 @@ Additional files referenced from SKILL.md are read only when needed[(1)](https:/
 ### Skill Directory Structure
 
 ```
-.claude/skills/hook-development/
+skills/hook-development/
 ├── SKILL.md                          # Core skill definition
 ├── hooks-language-guide/
 │   ├── README.md                     # Level 3: Linked resource
@@ -1670,7 +1670,7 @@ case "$agent_type" in
  hook-creator)
    # Set up hook development environment
    echo "HOOK_DEV_MODE=1" >> "$CLAUDE_ENV_FILE"
-   echo "HOOK_TEMPLATE_DIR=$CLAUDE_PROJECT_DIR/.claude/skills/hook-development/hooks-templates" >> "$CLAUDE_ENV_FILE"
+   echo "HOOK_TEMPLATE_DIR=$CLAUDE_PROJECT_DIR/skills/hook-development/hooks-templates" >> "$CLAUDE_ENV_FILE"
    ;;
 
  code-reviewer)

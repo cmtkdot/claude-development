@@ -1,6 +1,6 @@
 ---
 name: workflow-auditor
-description: "Use this agent when you need to verify that workflows, plans, agents, skills, hooks, or commands are using the best tools optimally. This includes reviewing YAML configurations, agent definitions, and architectural decisions. Also use after creating new agents, skills, or hooks to validate their design, or when performing code reviews on agentic system changes."
+description: "Use when validating overall plugin architecture, finding redundant/missing components, reviewing YAML configurations for optimization, or performing code review on agentic systems. Triggers: audit workflow, optimize configuration, architecture review, redundancy check, missing integrations, tool utilization analysis"
 tools: [Read, Write, Edit, Grep, Glob, Bash, Task]
 model: inherit
 skills: [ecosystem-analysis, writing-skills]

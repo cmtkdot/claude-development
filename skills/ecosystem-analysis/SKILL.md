@@ -1,22 +1,23 @@
 ---
 name: ecosystem-analysis
-description: Use when analyzing Claude Code configurations, finding integration opportunities between skills/agents/MCP/hooks, or optimizing your development environment setup. Triggers on audit, optimize, integration, ecosystem, hooks analysis.
+description: "Use when auditing Claude Code plugin configurations, finding integration opportunities between skills/agents/MCP/hooks, discovering what components exist, or generating optimization reports. Triggers: audit ecosystem, optimize config, integration gaps, what exists, component inventory, missing hooks"
+user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash
 hooks:
   PreToolUse:
     - matcher: "Bash"
       hooks:
         - type: command
-          command: ".claude/hooks/scripts/validate-safe-commands.sh"
+          command: "hooks/scripts/validate-safe-commands.sh"
   PostToolUse:
     - matcher: "Read"
       hooks:
         - type: command
-          command: ".claude/hooks/scripts/log-discovery.sh"
+          command: "hooks/scripts/log-discovery.sh"
   Stop:
     - hooks:
         - type: command
-          command: ".claude/hooks/scripts/generate-report.sh"
+          command: "hooks/scripts/generate-report.sh"
 ---
 
 # Ecosystem Analysis Skill
@@ -27,8 +28,8 @@ Analyze and optimize Claude Code configurations across skills, agents, MCP tools
 
 | Command | Purpose |
 |---------|---------|
-| `python3 .claude/hooks/scripts/discover-ecosystem.py` | Full ecosystem inventory |
-| `find .claude/skills -name "SKILL.md"` | Find all project skills |
+| `python3 hooks/scripts/discover-ecosystem.py` | Full ecosystem inventory |
+| `find skills -name "SKILL.md"` | Find all project skills |
 | `find .claude/agents -name "*.md"` | Find project agents |
 | `cat .mcp.json \| jq '.mcpServers \| keys'` | List MCP servers |
 | `jq '.hooks' .claude/settings.json` | View configured hooks |
@@ -49,7 +50,7 @@ hooks:
     - matcher: "ToolName"
       hooks:
         - type: command
-          command: ".claude/hooks/scripts/validate.sh"
+          command: "hooks/scripts/validate.sh"
 ```
 
 ### Skill → MCP Integration
@@ -59,7 +60,7 @@ hooks:
     - matcher: "mcp__servername__.*"
       hooks:
         - type: command
-          command: ".claude/hooks/scripts/mcp-audit.sh"
+          command: "hooks/scripts/mcp-audit.sh"
 ```
 
 ### Skill → Subagent Integration

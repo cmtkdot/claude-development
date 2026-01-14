@@ -1,6 +1,6 @@
 ---
 name: hook-creator
-description: "Expert hook developer for Claude Code project hooks. Use when creating, modifying, testing, or debugging hooks. Triggers: hook, PreToolUse, PostToolUse, SessionStart, automate, intercept tool, validate input, track changes, .claude/hooks/"
+description: "Use when creating hook scripts (.sh/.py/.cjs), configuring hooks in settings.json, debugging hook not firing issues, writing PreToolUse/PostToolUse/Stop handlers, or implementing tool validation/blocking logic. Triggers: create hook, hook not working, block tool, intercept, validate before, track after, exit code 2, settings.json hooks"
 tools: [Read, Write, Edit, Bash, Grep, Glob, TodoWrite]
 model: sonnet
 skills: [hook-development]
@@ -9,17 +9,17 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: 'bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/utils/preToolUse/validate-hook-syntax.sh'
+          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/hook-tools/lint-hook.sh'
           once: true
   PostToolUse:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: 'bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/hook-tools/lint-hook.sh'
+          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/hook-tools/lint-hook.sh'
   Stop:
     - hooks:
         - type: command
-          command: 'bash "$CLAUDE_PROJECT_DIR"/.claude/hooks/scripts/hook-tools/hook-audit-report.sh'
+          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/hook-tools/hook-audit-report.sh'
 ---
 
 # Hook Creator Agent

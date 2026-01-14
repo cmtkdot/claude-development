@@ -1,7 +1,7 @@
 {
-  "name": "claude-development",
+  "name": "plugin-dev",
   "version": "1.0.0",
-  "description": "Claude Code development toolkit for creating skills, hooks, agents, and commands",
+  "description": "Complete toolkit for Claude Code plugin development - create, test, audit, and optimize skills, agents, hooks, and slash commands with TDD methodology",
   "author": {
     "name": "Jay",
     "email": "jay@cmtkdot.com"
@@ -10,10 +10,13 @@
   "license": "MIT",
   "keywords": [
     "claude-code",
+    "plugin-development",
     "skills",
     "hooks",
     "agents",
-    "development",
-    "toolkit"
+    "commands",
+    "tdd",
+    "audit",
+    "validation"
   ]
 }

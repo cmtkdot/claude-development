@@ -1,7 +1,8 @@
 ---
 name: hook-development
-description: "Create, modify, or debug Claude Code project hooks. Triggers: hook, PreToolUse, PostToolUse, SessionStart, automate, intercept tool, validate input, track changes, .claude/hooks/"
+description: "Use when creating hook scripts, configuring settings.json hooks, debugging hook not firing issues, choosing hook event types, understanding exit codes, or writing PreToolUse/PostToolUse/Stop handlers. Triggers: create hook, hook not working, exit code, block tool, intercept, settings.json hooks, hook template, hook event"
 context: fork
+user-invocable: true
 allowed-tools:
   - Read
   - Write

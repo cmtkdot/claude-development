@@ -1,6 +1,7 @@
 ---
 name: create-hook-structure
-description: "Scaffold the complete Claude Code hooks directory structure. Use when setting up hooks in a new project or resetting hooks organization. Triggers: scaffold hooks, init hooks, create hooks structure, setup hooks"
+description: "Use when initializing hooks in a new project, scaffolding .claude/hooks/ directory structure, or resetting hooks organization. Triggers: scaffold hooks, init hooks, create hooks structure, setup hooks, new project hooks, hooks directory"
+user-invocable: true
 ---
 
 # Create Hook Structure
@@ -65,7 +66,7 @@ Scaffolds the complete `.claude/hooks/` directory structure for Claude Code proj
 
 1. **Run the scaffold script:**
    ```bash
-   bash .claude/hooks/scripts/scaffold-hooks.sh [target_dir]
+   bash hooks/scripts/scaffold-hooks.sh [target_dir]
    ```
 
 2. **Verify structure:**
@@ -100,5 +101,5 @@ tar -xzf claude-hooks-plugin.tar.gz -C /path/to/project/
 Run the scaffolding now:
 
 ```bash
-bash "$CLAUDE_PROJECT_DIR/.claude/hooks/scripts/scaffold-hooks.sh"
+bash "$CLAUDE_PROJECT_DIR/hooks/scripts/scaffold-hooks.sh"
 ```

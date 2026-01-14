@@ -117,8 +117,8 @@ agent_type=$(echo "$payload" | jq -r '.agent_type // ""')
 
 # Setup hook development environment
 echo "HOOK_DEV_MODE=1" >> "$CLAUDE_ENV_FILE"
-echo "HOOK_TEMPLATE_DIR=$CLAUDE_PROJECT_DIR/.claude/skills/hook-development/hooks-templates" >> "$CLAUDE_ENV_FILE"
-echo "HOOK_LANGUAGE_GUIDE=$CLAUDE_PROJECT_DIR/.claude/skills/hook-development/hooks-language-guide" >> "$CLAUDE_ENV_FILE"
+echo "HOOK_TEMPLATE_DIR=$CLAUDE_PROJECT_DIR/skills/hook-development/hooks-templates" >> "$CLAUDE_ENV_FILE"
+echo "HOOK_LANGUAGE_GUIDE=$CLAUDE_PROJECT_DIR/skills/hook-development/hooks-language-guide" >> "$CLAUDE_ENV_FILE"
 
 jq -n '{
   systemMessage: "🔧 Hook development environment activated"
@@ -500,5 +500,5 @@ agent_type=$(echo "$payload" | jq -r '.agent_type // ""')
 
 # Setup hook development environment
 echo "HOOK_DEV_MODE=1" >> "$CLAUDE_ENV_FILE"
-echo "HOOK_TEMPLATE_DIR=$CLAUDE_PROJECT_DIR/.claude/skills/hook-development/hooks-templates" >> "$CLAUDE_ENV_FILE"
-echo "HOOK_LANGUAGE_GUIDE=$CLAUDE_PROJECT_DIR/.claude/skills/hook-development/hooks-language-guide" >>
+echo "HOOK_TEMPLATE_DIR=$CLAUDE_PROJECT_DIR/skills/hook-development/hooks-templates" >> "$CLAUDE_ENV_FILE"
+echo "HOOK_LANGUAGE_GUIDE=$CLAUDE_PROJECT_DIR/skills/hook-development/hooks-language-guide" >>

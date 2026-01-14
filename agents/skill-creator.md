@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Expert skill auditor and creator. Use when creating, testing, reviewing, or debugging Claude Code skills. Specializes in TDD for documentation, skill metadata validation, hooks integration, and subagent configuration.
+description: "Use when creating new SKILL.md files, writing skill metadata/frontmatter, testing skills with pressure scenarios, debugging skill discovery issues, or applying TDD methodology to documentation. Triggers: create skill, new skill, skill not found, skill not loading, SKILL.md, skill frontmatter, CSO optimization"
 tools: [Read, Write, Edit, Glob, Grep, Bash, Task]
 model: sonnet
 skills: [writing-skills]
@@ -9,16 +9,16 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/.claude/hooks/scripts/skill-tools/validate-skill-metadata.py"
+          command: "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/validate-skill-metadata.py"
   PostToolUse:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/.claude/hooks/scripts/skill-tools/lint-skill.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/lint-skill.sh"
   Stop:
     - hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/.claude/hooks/scripts/skill-tools/skill-audit-report.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/skill-audit-report.sh"
 ---
 
 # Skill Master & Auditor

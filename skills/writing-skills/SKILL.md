@@ -1,8 +1,9 @@
 ---
 name: writing-skills
-description: Use when creating new skills, editing existing skills, testing skills with subagents, or verifying skills work before deployment. Also use when learning TDD for documentation.
+description: "Use when writing SKILL.md files, creating skill frontmatter/YAML, testing skills with pressure scenarios, learning TDD for documentation, or understanding skill metadata fields. Triggers: create skill, SKILL.md template, skill frontmatter, skill testing, CSO optimization, skill hooks"
 context: fork
 agent: [skill-creator, skill-router, hook-creator, agent-creator]
+user-invocable: true
 ---
 
 # Writing Skills
@@ -139,8 +140,8 @@ hooks:
 | Location   | Path                | Scope                        |
 | ---------- | ------------------- | ---------------------------- |
 | Enterprise | Managed settings    | All users in org             |
-| Personal   | `~/.claude/skills/` | You, across all projects     |
-| Project    | `.claude/skills/`   | Anyone in this repo          |
+| Personal   | `~/skills/` | You, across all projects     |
+| Project    | `skills/`   | Anyone in this repo          |
 | Plugin     | Bundled with plugin | Anyone with plugin installed |
 
 ## TDD Cycle for Skills

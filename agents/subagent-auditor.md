@@ -1,7 +1,7 @@
 ---
 name: subagent-auditor
-description: Expert subagent auditor for Claude Code subagents. Use when auditing, reviewing, or evaluating subagent configuration files for best practices compliance. MUST BE USED when user asks to audit a subagent.
-tools: Read, Grep, Glob
+description: "Use when reviewing agent .md configuration files, checking agent frontmatter/YAML, evaluating role definitions, validating tool restrictions, or auditing agent prompt quality. Triggers: audit agent, review agent, agent quality, agent best practices, agent issues, agent configuration"
+tools: [Read, Grep, Glob]
 model: sonnet
 ---
 

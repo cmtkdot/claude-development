@@ -1,7 +1,7 @@
 ---
 name: skill-router
-description: Analyzes skills, agents, MCP tools, and hooks to find integration opportunities and optimize configurations. Use when auditing your Claude Code setup, finding missing hooks, or unifying your tooling ecosystem.
-tools: Read, Write, Edit, Glob, Grep, Bash, Task
+description: "Use when discovering what skills/agents/hooks exist in a project, finding integration gaps between components, generating unified configurations, or analyzing MCP tool coverage. Triggers: list skills, find agents, ecosystem inventory, integration gaps, what hooks exist, MCP coverage, generate config"
+tools: [Read, Write, Edit, Glob, Grep, Bash, Task]
 model: sonnet
 skills: [writing-skills, ecosystem-analysis, hook-development]
 ---
@@ -25,7 +25,7 @@ When invoked, execute this discovery sequence:
 
 ```bash
 # Run the discovery script
-python3 .claude/hooks/scripts/ecosystem/discover-ecosystem.py
+python3 hooks/scripts/ecosystem/discover-ecosystem.py
 ```
 
 ### 2. Analysis Matrix
@@ -73,10 +73,10 @@ Generate a complete optimization report:
 
 ```bash
 # Full discovery
-python3 .claude/hooks/scripts/ecosystem/discover-ecosystem.py | jq
+python3 hooks/scripts/ecosystem/discover-ecosystem.py | jq
 
 # Generate integration configs
-python3 .claude/hooks/scripts/ecosystem/discover-ecosystem.py | python3 .claude/hooks/scripts/ecosystem/generate-integrations.py
+python3 hooks/scripts/ecosystem/discover-ecosystem.py | python3 hooks/scripts/ecosystem/generate-integrations.py
 
 # Quick inventory
 find .claude/skills -name "SKILL.md" | wc -l
@@ -101,7 +101,7 @@ hooks:
     - matcher: "ToolName"
       hooks:
         - type: command
-          command: ".claude/hooks/scripts/validate.sh"
+          command: "hooks/scripts/validate.sh"
 ```
 
 ### Skill → MCP Integration
@@ -112,7 +112,7 @@ hooks:
     - matcher: "mcp__servername__.*"
       hooks:
         - type: command
-          command: ".claude/hooks/scripts/mcp-audit.sh"
+          command: "hooks/scripts/mcp-audit.sh"
 ```
 
 ### Skill → Subagent Integration

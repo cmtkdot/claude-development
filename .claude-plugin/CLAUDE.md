@@ -1,3 +1,88 @@
+# plugin-dev: Claude Code Plugin Development Toolkit
+
+Complete toolkit for creating, testing, auditing, and optimizing Claude Code plugins with TDD methodology.
+
+## Quick Start
+
+| Goal | Command/Agent |
+|------|---------------|
+| Create a skill | `/skill-development <name>` or spawn `skill-creator` |
+| Create an agent | `/agent-development <name>` or spawn `agent-creator` |
+| Create a hook | `/hook-development <purpose>` or spawn `hook-creator` |
+| Create a command | `/command-development <name>` |
+| Scaffold plugin | `/create-plugin <name>` |
+| Audit skill | Spawn `skill-auditor` |
+| Audit agent | Spawn `subagent-auditor` |
+| Audit command | Spawn `slash-command-auditor` |
+| Audit architecture | Spawn `workflow-auditor` |
+| Find integrations | Spawn `skill-router` |
+
+## Workflow: Create -> Test -> Audit -> Wire
+
+```
+1. CREATE           2. TEST               3. AUDIT            4. WIRE
+   ┌──────────┐       ┌──────────┐         ┌──────────┐        ┌──────────┐
+   │ skill-   │       │ Pressure │         │ skill-   │        │settings  │
+   │ creator  │──────▶│ Scenarios│────────▶│ auditor  │───────▶│.json     │
+   │ agent-   │       │ with     │         │ subagent-│        │hooks     │
+   │ creator  │       │ subagents│         │ auditor  │        │config    │
+   │ hook-    │       │          │         │ workflow-│        │          │
+   │ creator  │       │          │         │ auditor  │        │          │
+   └──────────┘       └──────────┘         └──────────┘        └──────────┘
+```
+
+## Component Types
+
+### Agents (8 total)
+
+| Agent | Purpose | Invoke When |
+|-------|---------|-------------|
+| `skill-creator` | Create SKILL.md files with TDD | "create skill", "new skill" |
+| `agent-creator` | Create agent .md files | "create agent", "new subagent" |
+| `hook-creator` | Create/debug hook scripts | "create hook", "hook not working" |
+| `skill-auditor` | Review skill quality | "audit skill", "review SKILL.md" |
+| `subagent-auditor` | Review agent quality | "audit agent", "review agent" |
+| `slash-command-auditor` | Review command quality | "audit command" |
+| `workflow-auditor` | Architecture review | "audit workflow", "optimize config" |
+| `skill-router` | Find integration gaps | "list skills", "what exists" |
+
+### Skills (4 total)
+
+| Skill | Purpose | Invoke When |
+|-------|---------|-------------|
+| `/writing-skills` | TDD for documentation | Writing SKILL.md files |
+| `/hook-development` | 6-phase hook workflow | Creating hooks |
+| `/create-hook-structure` | Scaffold hooks directory | New project setup |
+| `/ecosystem-analysis` | Find integration opportunities | Auditing configurations |
+
+### Commands (7 total)
+
+| Command | Purpose |
+|---------|---------|
+| `/create-plugin` | End-to-end plugin creation |
+| `/skill-development` | Create/improve skills |
+| `/agent-development` | Create/improve agents |
+| `/hook-development` | Create/debug hooks |
+| `/command-development` | Create slash commands |
+| `/plugin-structure` | Understand plugin layout |
+| `/mcp-integration` | Add MCP servers |
+| `/plugin-settings` | Configure plugin settings |
+
+## TDD Methodology
+
+This plugin follows **Test-Driven Development for Documentation**:
+
+1. **RED**: Create pressure scenarios, run WITHOUT skill/agent, document failures
+2. **GREEN**: Write minimal skill/agent that passes scenarios
+3. **REFACTOR**: Close loopholes, add counters for rationalizations
+
+## Key Principles
+
+- **CSO (Claude Search Optimization)**: Descriptions start with "Use when..." and include triggering conditions, NOT workflow summaries
+- **Progressive Disclosure**: SKILL.md under 500 lines, heavy reference in separate files
+- **Hooks for Edge Cases**: Use hooks only for what can't be expressed in metadata
+- **Minimum Tools**: Restrict tools to only what's necessary
+
 <claude-mem-context>
 # Recent Activity
 
