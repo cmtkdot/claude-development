@@ -1,0 +1,19 @@
+{
+  "name": "claude-development",
+  "version": "1.0.0",
+  "description": "Claude Code development toolkit for creating skills, hooks, agents, and commands",
+  "author": {
+    "name": "Jay",
+    "email": "jay@cmtkdot.com"
+  },
+  "repository": "https://github.com/cmtkdot/claude-development-plugin",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "skills",
+    "hooks",
+    "agents",
+    "development",
+    "toolkit"
+  ]
+}
