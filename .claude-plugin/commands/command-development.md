@@ -1,5 +1,5 @@
 ---
-description: Create slash commands with YAML frontmatter, arguments, and tool restrictions
+description: Use when creating slash commands, adding YAML frontmatter, or configuring command arguments and tools
 allowed-tools: [Task, Read, Write, Edit, Bash, Glob, Grep, TodoWrite]
 argument-hint: "<command-name> [description]"
 ---

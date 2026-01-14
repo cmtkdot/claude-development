@@ -1,5 +1,5 @@
 ---
-description: Create or improve Claude Code skills using TDD methodology with the skill-creator agent
+description: Use when creating skills, writing SKILL.md files, or improving existing skills with TDD methodology
 allowed-tools: [Task, Read, Write, Edit, Bash, Glob, Grep, TodoWrite]
 argument-hint: "<skill-name> [description]"
 ---

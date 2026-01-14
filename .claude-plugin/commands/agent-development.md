@@ -1,5 +1,5 @@
 ---
-description: Create or improve Claude Code subagents with proper frontmatter and system prompts
+description: Use when creating agents, writing subagent configs, or improving agent frontmatter and system prompts
 allowed-tools: [Task, Read, Write, Edit, Bash, Glob, Grep, TodoWrite]
 argument-hint: "<agent-name> [description]"
 ---

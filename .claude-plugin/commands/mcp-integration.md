@@ -1,5 +1,5 @@
 ---
-description: Integrate MCP servers into Claude Code plugins for external tool access
+description: Use when adding MCP servers, configuring external tools, or connecting Claude Code to external services
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 argument-hint: "<mcp-server-name> [server-type]"
 ---

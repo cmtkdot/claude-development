@@ -1,5 +1,5 @@
 ---
-description: Understand and scaffold Claude Code plugin directory structure and manifest
+description: Use when scaffolding plugins, understanding plugin layout, or configuring plugin.json manifests
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 argument-hint: "[plugin-name]"
 ---

@@ -1,5 +1,5 @@
 ---
-description: Guided end-to-end plugin creation workflow with component design, implementation, and validation
+description: Use when creating new plugins, scaffolding plugin structure, or starting end-to-end plugin development
 allowed-tools: [Task, Read, Write, Edit, Bash, Glob, Grep, TodoWrite]
 argument-hint: "<plugin-name> [description]"
 ---

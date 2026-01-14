@@ -1,5 +1,5 @@
 ---
-description: Configure plugin settings using local files and environment variables
+description: Use when configuring plugin settings, managing local files, or setting up environment variables
 allowed-tools: [Read, Write, Edit, Glob]
 argument-hint: "[setting-name] [value]"
 ---

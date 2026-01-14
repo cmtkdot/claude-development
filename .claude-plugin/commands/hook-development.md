@@ -1,5 +1,5 @@
 ---
-description: Create or debug Claude Code hooks with 6-phase workflow guidance
+description: Use when creating hooks, debugging hook issues, or learning the 6-phase hook development workflow
 allowed-tools: [Task, Read, Write, Edit, Bash, Glob, Grep, TodoWrite]
 argument-hint: "<hook-purpose> [event-type]"
 ---
