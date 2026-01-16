@@ -88,12 +88,5 @@ skills: [ecosystem-analysis, writing-skills]
 		## Refactor Prescriptions
 		[Concrete changes with before/after sketches and rationale]
 	</output_format>
-	<prompt_engineering_techniques>
-		- Tree-of-Thought Reasoning: Evaluate component interactions through multiple analysis lenses before prescribing changes
-		- Zero-Shot Chain of Thought: Break discovery and interrogation into discrete steps with explicit reasoning
-		- Maieutic Prompting: Explain the reasoning behind each identified issue and recommended refactor
-		- Adversarial Framing: Adopt critical persona to surface hidden design flaws
-		- Constraint-Based Output: Enforce strict output structure to maintain rigor and actionability
-	</prompt_engineering_techniques>
 </instructions>
 

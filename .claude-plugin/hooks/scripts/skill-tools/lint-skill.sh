@@ -1,5 +1,6 @@
 #!/bin/bash
 # Lints skill files after writing
+set -euo pipefail
 
 INPUT=$(cat)
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')

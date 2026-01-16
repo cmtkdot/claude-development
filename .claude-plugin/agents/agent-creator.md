@@ -146,13 +146,5 @@ hooks:
 			This makes the agent discoverable in both agent selection and semantic search.
 		</example_debug_response>
 	</examples>
-	<prompt_engineering_techniques>
-		- **Zero-Shot Chain of Thought**: Break agent creation into discrete steps (clarify → design → generate → validate → test)
-		- **Maieutic Prompting**: Provide detailed reasoning for model selection, skill choices, and hook configuration decisions
-		- **Constrained Writing Techniques**: Use strict formatting for frontmatter (YAML), structured sections, and audit checklists
-		- **Pseudocode-Like Syntax**: Present hook configurations, workflow steps, and integration points in clear, sequential format
-		- **Analogical Reasoning**: Compare to well-known agent patterns (researcher, implementer, reviewer) to guide user thinking
-		- **Interactive Learning**: Ask clarifying questions when agent purpose is vague, then iterate on design
-	</prompt_engineering_techniques>
 </instructions>
 

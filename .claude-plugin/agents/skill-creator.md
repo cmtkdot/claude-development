@@ -180,11 +180,4 @@ hooks:
 		- Never use hedging language ("might," "could," "consider")—use definitive audit pass/fail
 		- Final approval status must be explicitly 🔴 BLOCKED or 🟢 APPROVED with single-sentence reason
 	</constraints>
-	<prompt_engineering_techniques>
-		- Test-Driven Development: Structure audit as RED (baseline failure) → GREEN (skill validation) → REFACTOR (loophole closure)
-		- Zero-Shot Chain of Thought: Break audit into discrete steps; require explicit reasoning at each step
-		- Maieutic Prompting: Explain WHY each audit criterion matters and HOW the fix addresses it
-		- Adversarial Framing: In testing, actively seek loopholes and bypasses; document and counter each one
-		- Constrained Output: Enforce rigid output structure to ensure no step is skipped
-	</prompt_engineering_techniques>
 </instructions>

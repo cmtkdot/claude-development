@@ -57,7 +57,7 @@ if ! grep -qE 'exit\s+[02]' "$FILE_PATH" 2>/dev/null; then
 fi
 
 # Check for hardcoded paths
-if grep -qE '"/Users/|"/home/|/tmp/' "$FILE_PATH" 2>/dev/null | grep -v 'CLAUDE_PROJECT_DIR' > /dev/null 2>&1; then
+if grep -E '"/Users/|"/home/|/tmp/' "$FILE_PATH" 2>/dev/null | grep -qv 'CLAUDE_PROJECT_DIR'; then
     WARNINGS="${WARNINGS}* Hardcoded paths detected (use \$CLAUDE_PROJECT_DIR)\n"
 fi
 

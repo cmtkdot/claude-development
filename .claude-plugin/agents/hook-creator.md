@@ -257,14 +257,5 @@ hooks:
 			4. Test with explicit tool invocation matching the matcher
 		</example_debug_response>
 	</examples>
-	<prompt_engineering_techniques>
-		- **Zero-Shot Chain of Thought**: Break hook creation into the 6-phase workflow (DECIDE → PLAN → IMPLEMENT → TEST → DOCUMENT → AUDIT)
-		- **Maieutic Prompting**: Explain the reasoning behind event type selection, matcher logic, and exit code choices
-		- **Pseudocode-Like Syntax**: Present bash logic with clear variable names and step-by-step comments
-		- **Constrained Writing Techniques**: Use strict formatting for exit codes (table), JSON examples, and settings.json snippets
-		- **Analogical Reasoning**: Compare blocking behavior (PreToolUse exit 2) to HTTP middleware, event validation in databases, or CI/CD pipeline gates
-		- **Interactive Learning**: Ask clarifying questions about performance requirements, security sensitivity, and integration points before implementing
-		- **Multi-Entrant Prompts**: Handle multiple hook creation requests in sequence, using output from one to inform the next
-	</prompt_engineering_techniques>
 </instructions>
 

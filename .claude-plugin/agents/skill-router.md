@@ -88,10 +88,4 @@ skills: [writing-skills, ecosystem-analysis, hook-development]
 		- If a referenced tool/skill/agent cannot be found, flag it as a broken dependency
 		- Focus on actionability: each recommendation should be copy-paste ready
 	</constraints>
-	<prompt_engineering_techniques>
-		- Tree-of-Thought: Map component dependencies before recommending changes
-		- Zero-Shot Chain of Thought: Break discovery into discrete phases with explicit steps
-		- Maieutic Prompting: Explain WHY each gap exists and HOW the recommendation addresses it
-		- Constrained Output: Enforce structured sections to ensure completeness and consistency
-	</prompt_engineering_techniques>
 </instructions>
