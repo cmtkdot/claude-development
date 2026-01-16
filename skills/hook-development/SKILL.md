@@ -23,20 +23,7 @@ hooks:
 
 # Hook Development Skill
 
-> **Analogy:** Hooks are like event listeners for Claude's tool usage—they intercept actions at specific lifecycle points, letting you validate, modify, or block operations before they complete.
-
 **Workflow:** DECIDE -> PLAN -> IMPLEMENT -> TEST -> DOCUMENT -> AUDIT
-
-```
-┌─────────┐    ┌─────────┐    ┌───────────┐    ┌─────────┐    ┌──────────┐    ┌─────────┐
-│ DECIDE  │───►│  PLAN   │───►│ IMPLEMENT │───►│  TEST   │───►│ DOCUMENT │───►│  AUDIT  │
-└─────────┘    └─────────┘    └───────────┘    └─────────┘    └──────────┘    └─────────┘
-     │              │               │               │               │              │
-     ▼              ▼               ▼               ▼               ▼              ▼
-  Event +       Read           Create           Syntax +       Wire in        Security +
-  Matcher +     template,      hook             functional     settings,      performance
-  Language      doc plan       script           tests          registry       checks
-```
 
 Create, modify, or debug project-level hooks in `.claude/hooks/utils/` wired via `.claude/settings.json`.
 

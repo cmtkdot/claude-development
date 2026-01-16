@@ -7,8 +7,6 @@ allowed-tools: Read, Grep, Glob, Bash
 
 # Ecosystem Analysis Skill
 
-> **Analogy:** Ecosystem analysis is like a dependency graph for your Claude configuration—it maps how skills, agents, MCP tools, and hooks connect, revealing gaps and redundancies just like a package manager shows missing or conflicting dependencies.
-
 Analyze and optimize Claude Code configurations across skills, agents, MCP tools, and hooks.
 
 ## Quick Commands

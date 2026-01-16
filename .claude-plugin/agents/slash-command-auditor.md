@@ -4,6 +4,11 @@ description: "Use when reviewing slash command .md files, checking command YAML 
 tools: [Read, Grep, Glob]
 model: sonnet
 skills: [writing-skills]
+hooks:
+  Stop:
+    - hooks:
+        - type: prompt
+          prompt: "Before completing: Summarize audit findings count (critical/recommendations/quick fixes) and confirm all evaluation areas were assessed."
 ---
 
 <role>

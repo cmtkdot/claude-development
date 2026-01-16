@@ -1,0 +1,37 @@
+{
+  "name": "claude-development",
+  "owner": {
+    "name": "Jay",
+    "email": "jay@cmtkdot.com"
+  },
+  "metadata": {
+    "description": "Complete toolkit for Claude Code plugin development - create, test, audit, and optimize skills, agents, hooks, and slash commands with TDD methodology",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "claude-dev",
+      "source": "./",
+      "description": "Claude Code plugin development toolkit with TDD methodology",
+      "version": "1.0.0",
+      "strict": false,
+      "agents": [
+        "./agents/skill-creator.md",
+        "./agents/agent-creator.md",
+        "./agents/hook-creator.md",
+        "./agents/skill-auditor.md",
+        "./agents/subagent-auditor.md",
+        "./agents/slash-command-auditor.md",
+        "./agents/workflow-auditor.md",
+        "./agents/skill-router.md"
+      ],
+      "skills": [
+        "./skills/writing-skills",
+        "./skills/hook-development",
+        "./skills/create-hook-structure",
+        "./skills/ecosystem-analysis"
+      ],
+      "commands": ["./commands"]
+    }
+  ]
+}

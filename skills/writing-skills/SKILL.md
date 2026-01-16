@@ -146,19 +146,6 @@ hooks:
 
 ## TDD Cycle for Skills
 
-```
-RED ──────────► GREEN ──────────► REFACTOR
- │                │                   │
- ▼                ▼                   ▼
-Baseline       Minimal            Close
-Test           Skill              Loopholes
- │                │                   │
- ▼                ▼                   ▼
-Document       Address            Add counters
-failures       failures           for new
-               from RED           rationalizations
-```
-
 ### RED: Baseline Test
 
 Run pressure scenario WITHOUT skill. Document exact rationalizations.

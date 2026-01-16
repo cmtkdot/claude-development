@@ -4,6 +4,11 @@ description: "Use when reviewing SKILL.md files for quality, checking skill meta
 tools: [Read, Grep, Glob]
 model: sonnet
 skills: [writing-skills, ecosystem-analysis]
+hooks:
+  Stop:
+    - hooks:
+        - type: prompt
+          prompt: "Before completing: Summarize audit findings count (critical/recommendations/quick fixes) and confirm all evaluation areas were assessed."
 ---
 
 <role>
