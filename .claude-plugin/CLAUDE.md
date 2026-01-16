@@ -33,10 +33,11 @@ Complete toolkit for creating, testing, auditing, and optimizing Claude Code plu
 
 ## Component Types
 
-### Agents (8 total)
+### Agents (9 total)
 
 | Agent | Purpose | Invoke When |
 |-------|---------|-------------|
+| `starter-agent` | **Start here** - Decide what to build | "where do I start", "hook or skill?", "what should I build" |
 | `skill-creator` | Create SKILL.md files with TDD | "create skill", "new skill" |
 | `agent-creator` | Create agent .md files | "create agent", "new subagent" |
 | `hook-creator` | Create/debug hook scripts | "create hook", "hook not working" |
