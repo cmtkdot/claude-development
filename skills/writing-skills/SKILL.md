@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: "Use when writing SKILL.md files, creating skill frontmatter/YAML, testing skills with pressure scenarios, learning TDD for documentation, or understanding skill metadata fields. Triggers: create skill, SKILL.md template, skill frontmatter, skill testing, CSO optimization, skill hooks"
+description: "Use when creating or updating SKILL.md files, testing skills with pressure scenarios, or learning TDD for documentation. Triggers: create skill, new skill, SKILL.md template, skill frontmatter, skill testing, CSO optimization"
 context: fork
 agent: [skill-creator, skill-router, hook-creator, agent-creator]
 user-invocable: true
@@ -8,157 +8,177 @@ user-invocable: true
 
 # Writing Skills
 
-## Overview
-
-**Writing skills IS Test-Driven Development applied to process documentation.**
-
-Write test cases (pressure scenarios with subagents), watch them fail (baseline behavior), write the skill (documentation), watch tests pass (agents comply), and refactor (close loopholes).
+Skills are modular packages that extend Claude's capabilities with specialized knowledge, workflows, and tools. This skill covers creating, testing, and optimizing them.
 
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing.
 
-## SKILL.md Structure & Metadata
+## Skill Creation Process
 
-### Required Fields
+1. Understand the skill with concrete examples
+2. Plan reusable contents (scripts, references, assets)
+3. Initialize the skill (`scripts/init_skill.py`)
+4. Edit the skill (implement resources, write SKILL.md)
+5. Test with pressure scenarios (TDD)
+6. Package the skill (`scripts/package_skill.py`)
 
-| Field         | Description                                                                         |
-| ------------- | ----------------------------------------------------------------------------------- |
-| `name`        | Lowercase letters, numbers, hyphens only (max 64 chars). Must match directory name. |
-| `description` | What it does and when to use it (max 1024 chars). Start with "Use when..."          |
-
-### Optional Fields
-
-| Field            | Description                                                                              |
-| ---------------- | ---------------------------------------------------------------------------------------- |
-| `allowed-tools`  | Tools Claude can use without permission when skill is active                             |
-| `model`          | Model to use (e.g., `claude-sonnet-4-20250514`)                                          |
-| `context`        | Set to `fork` to run in isolated sub-agent context                                       |
-| `agent`          | Agent type when `context: fork` is set (`Explore`, `Plan`, `general-purpose`, or custom) |
-| `hooks`          | Lifecycle hooks: `PreToolUse`, `PostToolUse`, `Stop`                                     |
-| `user-invocable` | Controls slash command menu visibility (default `true`)                                  |
-| `disable-model-invocation` | Blocks programmatic Skill tool invocation (default `false`)                   |
-
-### Example with All Features
-
-```yaml
----
-name: secure-code-review
-description: Use when reviewing code for security vulnerabilities, checking PRs for security issues, or auditing authentication flows.
-allowed-tools: Read, Grep, Glob
-model: claude-sonnet-4-20250514
-context: fork
-agent: code-reviewer
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "./scripts/security-check.sh $TOOL_INPUT"
-          once: true
-  PostToolUse:
-    - matcher: "Edit|Write"
-      hooks:
-        - type: command
-          command: "./scripts/run-linter.sh"
----
-```
-
-## Directory Structure
+## SKILL.md Structure
 
 ```
-skills/
-  skill-name/
-    SKILL.md              # Main reference (required)
-    reference.md          # Heavy docs (loaded when needed)
-    scripts/
-      helper.py           # Executed, not loaded into context
+skill-name/
+├── SKILL.md              # Main reference (required, <500 lines)
+├── scripts/              # Executable code (Python/Bash)
+├── references/           # Documentation loaded as needed
+└── assets/               # Files used in output (templates, icons)
 ```
 
-**Progressive disclosure:** Keep `SKILL.md` under 500 lines. Link to supporting files for detailed reference.
+### Required Frontmatter
 
-## Skills and Subagents Integration
+| Field | Description |
+|-------|-------------|
+| `name` | Lowercase, numbers, hyphens only (max 64 chars) |
+| `description` | Start with "Use when..." - triggers skill loading |
 
-### Give Subagents Access to Skills
+### Optional Frontmatter
 
-Subagents don't inherit skills automatically. Use the `skills` field in agent definition:
+| Field | Description |
+|-------|-------------|
+| `allowed-tools` | Tools Claude can use without permission |
+| `model` | Model to use (e.g., `claude-sonnet-4-20250514`) |
+| `context` | Set to `fork` for isolated sub-agent context |
+| `agent` | Agent type when `context: fork` is set |
+| `hooks` | Lifecycle hooks: `PreToolUse`, `PostToolUse`, `Stop` |
+| `user-invocable` | Controls slash command visibility (default `true`) |
 
-```yaml
-# .claude/agents/code-reviewer.md
----
-name: code-reviewer
-description: Review code for quality and best practices
-skills: [pr-review, security-check, pal-tools]
----
+## Degrees of Freedom
+
+Match specificity to task fragility:
+
+| Level | When to Use | Format |
+|-------|-------------|--------|
+| **High** | Multiple valid approaches, context-dependent | Text instructions |
+| **Medium** | Preferred pattern exists, some variation OK | Pseudocode/scripts with params |
+| **Low** | Fragile operations, consistency critical | Specific scripts, few params |
+
+Think of Claude exploring a path: narrow bridge with cliffs needs guardrails (low freedom), open field allows many routes (high freedom).
+
+## Progressive Disclosure
+
+Keep SKILL.md lean. Split content when approaching 500 lines.
+
+**Pattern 1: High-level guide with references**
+```markdown
+## Quick start
+[Core workflow]
+
+## Advanced features
+- **Form filling**: See references/forms.md
+- **API reference**: See references/api.md
 ```
 
-### Run Skills in Forked Context
+**Pattern 2: Domain-specific organization**
+```
+bigquery-skill/
+├── SKILL.md (overview + navigation)
+└── references/
+    ├── finance.md
+    ├── sales.md
+    └── product.md
+```
+User asks about sales → Claude only reads sales.md.
 
-Use `context: fork` for isolated execution:
+**Pattern 3: Conditional details**
+```markdown
+## Creating documents
+Use docx-js. See references/docx-js.md.
 
-```yaml
----
-name: code-analysis
-description: Analyze code quality and generate detailed reports
-context: fork
-agent: code-reviewer
----
+## Editing documents
+For simple edits, modify XML directly.
+**For tracked changes**: See references/redlining.md
 ```
 
-## Hooks in Skills
+## What NOT to Include
 
-Define lifecycle hooks scoped to the skill's execution:
+Do NOT create extraneous files:
+- README.md
+- INSTALLATION_GUIDE.md
+- CHANGELOG.md
+- QUICK_REFERENCE.md
 
-```yaml
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "./scripts/validate.sh $TOOL_INPUT"
-          once: true # Run only once per session
-  PostToolUse:
-    - matcher: "Edit|Write"
-      hooks:
-        - type: command
-          command: "./scripts/lint.sh"
-  Stop:
-    - hooks:
-        - type: prompt
-          prompt: "Before stopping: verify all checklist items complete."
-```
-
-**Supported events:** `PreToolUse`, `PostToolUse`, `Stop`
-
-**Hook types:**
-
-- `command` — Run shell command
-- `prompt` — Inject prompt guidance
-
-**`once: true`:** Hook runs only once per session, then is removed.
-
-## Where Skills Live
-
-| Location   | Path                | Scope                        |
-| ---------- | ------------------- | ---------------------------- |
-| Enterprise | Managed settings    | All users in org             |
-| Personal   | `~/skills/` | You, across all projects     |
-| Project    | `skills/`   | Anyone in this repo          |
-| Plugin     | Bundled with plugin | Anyone with plugin installed |
+Skills are for AI agents, not human documentation.
 
 ## TDD Cycle for Skills
 
 ### RED: Baseline Test
-
 Run pressure scenario WITHOUT skill. Document exact rationalizations.
 
 ### GREEN: Write Minimal Skill
-
 Address specific failures from baseline. Run WITH skill—agent should comply.
 
 ### REFACTOR: Close Loopholes
-
 New rationalization found? Add explicit counter. Re-test until bulletproof.
 
-**Detailed methodology:** See `testing-skills-with-subagents.md` for pressure scenario design, rationalization tables, and meta-testing techniques.
+**Detailed methodology:** See `testing-skills-with-subagents.md`
+
+## Claude Search Optimization (CSO)
+
+**Description = When to Use, NOT What the Skill Does**
+
+```yaml
+# ❌ BAD: Summarizes workflow
+description: Use when executing plans - dispatches subagent per task
+
+# ✅ GOOD: Just triggering conditions
+description: Use when executing implementation plans with independent tasks
+```
+
+**Keyword coverage:** Include error messages, symptoms, synonyms, tool names.
+
+**Token targets:**
+- Getting-started workflows: <150 words
+- Frequently-loaded skills: <200 words
+- Other skills: <500 words
+
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/init_skill.py <name> --path <dir>` | Initialize new skill directory |
+| `scripts/package_skill.py <path>` | Validate and package .skill file |
+| `scripts/quick_validate.py <path>` | Quick validation check |
+
+## References
+
+| File | Purpose |
+|------|---------|
+| `references/workflows.md` | Sequential and conditional workflow patterns |
+| `references/output-patterns.md` | Template and examples patterns |
+| `testing-skills-with-subagents.md` | Pressure scenario design, rationalization tables |
+| `anthropic-best-practices.md` | Official Anthropic guidance |
+
+## Skill Creation Checklist
+
+**Use TodoWrite to track each item.**
+
+**RED Phase:**
+- [ ] Create pressure scenarios (3+ combined pressures)
+- [ ] Run WITHOUT skill—document baseline behavior
+- [ ] Identify rationalization patterns
+
+**GREEN Phase:**
+- [ ] Name: lowercase, numbers, hyphens only
+- [ ] Description: starts with "Use when...", max 1024 chars
+- [ ] Run WITH skill—verify compliance
+
+**REFACTOR Phase:**
+- [ ] Add counters for new rationalizations
+- [ ] Build rationalization table
+- [ ] Re-test until bulletproof
+
+**Package:**
+- [ ] Run `scripts/package_skill.py`
+- [ ] Commit and push
+
+---
 
 ## The Iron Law
 
@@ -167,159 +187,3 @@ NO SKILL WITHOUT A FAILING TEST FIRST
 ```
 
 Write skill before testing? Delete it. Start over. No exceptions.
-
----
-
-## Claude Search Optimization (CSO)
-
-**Critical for discovery:** Future Claude needs to FIND your skill.
-
-### Description Field
-
-**Purpose:** Claude reads description to decide which skills to load. Make it answer: "Should I read this skill right now?"
-
-**Format:** Start with "Use when..." to focus on triggering conditions.
-
-**CRITICAL: Description = When to Use, NOT What the Skill Does**
-
-```yaml
-# ❌ BAD: Summarizes workflow - Claude may follow this instead of reading skill
-description: Use when executing plans - dispatches subagent per task with code review between tasks
-
-# ✅ GOOD: Just triggering conditions, no workflow summary
-description: Use when executing implementation plans with independent tasks in the current session
-```
-
-### Keyword Coverage
-
-Use words Claude would search for:
-
-- Error messages: "Hook timed out", "ENOTEMPTY", "race condition"
-- Symptoms: "flaky", "hanging", "zombie", "pollution"
-- Synonyms: "timeout/hang/freeze", "cleanup/teardown/afterEach"
-- Tools: Actual commands, library names, file types
-
-### Token Efficiency
-
-**Target word counts:**
-
-- getting-started workflows: <150 words each
-- Frequently-loaded skills: <200 words total
-- Other skills: <500 words (still be concise)
-
----
-
-## Testing Skill Types
-
-### Discipline-Enforcing Skills (rules/requirements)
-
-**Examples:** TDD, verification-before-completion
-**Test with:** Pressure scenarios, combined pressures (time + sunk cost + exhaustion)
-**Success:** Agent follows rule under maximum pressure
-
-### Technique Skills (how-to guides)
-
-**Examples:** condition-based-waiting, root-cause-tracing
-**Test with:** Application scenarios, edge cases, missing information tests
-**Success:** Agent successfully applies technique
-
-### Pattern Skills (mental models)
-
-**Examples:** reducing-complexity, information-hiding
-**Test with:** Recognition scenarios, counter-examples
-**Success:** Agent correctly identifies when/how to apply pattern
-
-### Reference Skills (documentation/APIs)
-
-**Examples:** API docs, command references
-**Test with:** Retrieval and application scenarios
-**Success:** Agent finds and correctly applies reference
-
----
-
-## Bulletproofing Against Rationalization
-
-### Close Every Loophole Explicitly
-
-```markdown
-Write code before test? Delete it. Start over.
-
-**No exceptions:**
-
-- Don't keep it as "reference"
-- Don't "adapt" it while writing tests
-- Delete means delete
-```
-
-### Build Rationalization Table
-
-| Excuse                           | Reality                                                                 |
-| -------------------------------- | ----------------------------------------------------------------------- |
-| "Too simple to test"             | Simple code breaks. Test takes 30 seconds.                              |
-| "I'll test after"                | Tests passing immediately prove nothing.                                |
-| "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
-
-### Create Red Flags List
-
-```markdown
-## Red Flags - STOP and Start Over
-
-- Code before test
-- "I already manually tested it"
-- "Tests after achieve the same purpose"
-- "This is different because..."
-
-**All of these mean: Delete code. Start over with TDD.**
-```
-
----
-
-## Skill Creation Checklist
-
-**IMPORTANT: Use TodoWrite to create todos for EACH checklist item.**
-
-**RED Phase:**
-
-- [ ] Create pressure scenarios (3+ combined pressures)
-- [ ] Run WITHOUT skill—document baseline behavior
-- [ ] Identify rationalization patterns
-
-**GREEN Phase:**
-
-- [ ] Name: lowercase, numbers, hyphens only
-- [ ] Description: starts with "Use when...", max 1024 chars
-- [ ] Run WITH skill—verify compliance
-
-**REFACTOR Phase:**
-
-- [ ] Add counters for new rationalizations
-- [ ] Build rationalization table
-- [ ] Re-test until bulletproof
-
-**Deployment:**
-
-- [ ] Commit and push
-- [ ] Consider contributing via PR
-
----
-
-## Anti-Patterns
-
-| Pattern                         | Why Bad                              |
-| ------------------------------- | ------------------------------------ |
-| Narrative storytelling          | Too specific, not reusable           |
-| Multi-language examples         | Mediocre quality, maintenance burden |
-| Code in flowcharts              | Can't copy-paste                     |
-| Generic labels (step1, helper2) | No semantic meaning                  |
-
----
-
-## The Bottom Line
-
-**Creating skills IS TDD for process documentation.**
-
-Same Iron Law: No skill without failing test first.
-Same cycle: RED (baseline) → GREEN (write skill) → REFACTOR (close loopholes).
-Same benefits: Better quality, fewer surprises, bulletproof results.
-
-If you follow TDD for code, follow it for skills.
