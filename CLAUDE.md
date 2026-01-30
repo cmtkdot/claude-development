@@ -22,19 +22,20 @@ Toolkit for creating, auditing, and validating Claude Code skills, agents, and h
 ## Directory Structure
 
 ```
-claude-toolkit/
+claude-toolkit/                 # Plugin root
 ├── .claude-plugin/
-│   ├── plugin.json           # Plugin manifest
-│   ├── settings.json         # Hook configuration
-│   ├── CLAUDE.md             # Plugin context
-│   ├── agents/               # 9 specialized agents
-│   ├── skills/               # 4 skills
-│   ├── hooks/                # Validation scripts
-│   └── commands/             # Slash commands
+│   └── plugin.json            # Plugin manifest (ONLY this goes here)
+├── agents/                    # 9 specialized agents
+├── skills/                    # 4 skills
+├── commands/                  # Slash commands
+├── hooks/
+│   ├── hooks.json             # Hook configuration
+│   └── scripts/               # Validation scripts
 ├── scripts/
-│   └── sync-plugin.sh
 └── README.md
 ```
+
+Per official docs: Only `plugin.json` goes in `.claude-plugin/`. All other directories at plugin root.
 
 ---
 
