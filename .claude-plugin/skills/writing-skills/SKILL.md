@@ -1,191 +1,145 @@
 ---
 name: writing-skills
-description: "Use when creating or updating SKILL.md files, testing skills with pressure scenarios, or learning TDD for documentation. Triggers: create skill, new skill, SKILL.md template, skill frontmatter, skill testing, CSO optimization"
+description: "Use when creating or updating SKILL.md files. Triggers: create skill, new skill, SKILL.md template, skill frontmatter"
 argument-hint: "[skill-name]"
 disable-model-invocation: true
-context: fork
-agent: [skill-creator, skill-router, hook-creator, agent-creator]
-user-invocable: true
 ---
 
 # Writing Skills
 
-Skills are modular packages that extend Claude's capabilities with specialized knowledge, workflows, and tools. This skill covers creating, testing, and optimizing them.
+Skills extend Claude's capabilities. Create a `SKILL.md` file with instructions, and Claude adds it to its toolkit.
 
-**Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing.
+## Quick Start
 
-## Skill Creation Process
+Create a skill directory with a SKILL.md:
 
-1. Understand the skill with concrete examples
-2. Plan reusable contents (scripts, references, assets)
-3. Initialize the skill (`scripts/init_skill.py`)
-4. Edit the skill (implement resources, write SKILL.md)
-5. Test with pressure scenarios (TDD)
-6. Package the skill (`scripts/package_skill.py`)
-
-## SKILL.md Structure
-
-```
-skill-name/
-├── SKILL.md              # Main reference (required, <500 lines)
-├── scripts/              # Executable code (Python/Bash)
-├── references/           # Documentation loaded as needed
-└── assets/               # Files used in output (templates, icons)
+```bash
+mkdir -p ~/.claude/skills/my-skill
 ```
 
-### Required Frontmatter
-
-| Field | Description |
-|-------|-------------|
-| `name` | Lowercase, numbers, hyphens only (max 64 chars) |
-| `description` | Start with "Use when..." - triggers skill loading |
-
-### Optional Frontmatter
-
-| Field | Description |
-|-------|-------------|
-| `allowed-tools` | Tools Claude can use without permission |
-| `model` | Model to use (e.g., `claude-sonnet-4-20250514`) |
-| `context` | Set to `fork` for isolated sub-agent context |
-| `agent` | Agent type when `context: fork` is set |
-| `hooks` | Lifecycle hooks: `PreToolUse`, `PostToolUse`, `Stop` |
-| `user-invocable` | Controls slash command visibility (default `true`) |
-
-## Degrees of Freedom
-
-Match specificity to task fragility:
-
-| Level | When to Use | Format |
-|-------|-------------|--------|
-| **High** | Multiple valid approaches, context-dependent | Text instructions |
-| **Medium** | Preferred pattern exists, some variation OK | Pseudocode/scripts with params |
-| **Low** | Fragile operations, consistency critical | Specific scripts, few params |
-
-Think of Claude exploring a path: narrow bridge with cliffs needs guardrails (low freedom), open field allows many routes (high freedom).
-
-## Progressive Disclosure
-
-Keep SKILL.md lean. Split content when approaching 500 lines.
-
-**Pattern 1: High-level guide with references**
-```markdown
-## Quick start
-[Core workflow]
-
-## Advanced features
-- **Form filling**: See references/forms.md
-- **API reference**: See references/api.md
-```
-
-**Pattern 2: Domain-specific organization**
-```
-bigquery-skill/
-├── SKILL.md (overview + navigation)
-└── references/
-    ├── finance.md
-    ├── sales.md
-    └── product.md
-```
-User asks about sales → Claude only reads sales.md.
-
-**Pattern 3: Conditional details**
-```markdown
-## Creating documents
-Use docx-js. See references/docx-js.md.
-
-## Editing documents
-For simple edits, modify XML directly.
-**For tracked changes**: See references/redlining.md
-```
-
-## What NOT to Include
-
-Do NOT create extraneous files:
-- README.md
-- INSTALLATION_GUIDE.md
-- CHANGELOG.md
-- QUICK_REFERENCE.md
-
-Skills are for AI agents, not human documentation.
-
-## TDD Cycle for Skills
-
-### RED: Baseline Test
-Run pressure scenario WITHOUT skill. Document exact rationalizations.
-
-### GREEN: Write Minimal Skill
-Address specific failures from baseline. Run WITH skill—agent should comply.
-
-### REFACTOR: Close Loopholes
-New rationalization found? Add explicit counter. Re-test until bulletproof.
-
-**Detailed methodology:** See `testing-skills-with-subagents.md`
-
-## Claude Search Optimization (CSO)
-
-**Description = When to Use, NOT What the Skill Does**
+Write the SKILL.md:
 
 ```yaml
-# ❌ BAD: Summarizes workflow
-description: Use when executing plans - dispatches subagent per task
-
-# ✅ GOOD: Just triggering conditions
-description: Use when executing implementation plans with independent tasks
-```
-
-**Keyword coverage:** Include error messages, symptoms, synonyms, tool names.
-
-**Token targets:**
-- Getting-started workflows: <150 words
-- Frequently-loaded skills: <200 words
-- Other skills: <500 words
-
-## Scripts
-
-| Script | Purpose |
-|--------|---------|
-| `scripts/init_skill.py <name> --path <dir>` | Initialize new skill directory |
-| `scripts/package_skill.py <path>` | Validate and package .skill file |
-| `scripts/quick_validate.py <path>` | Quick validation check |
-
-## References
-
-| File | Purpose |
-|------|---------|
-| `references/workflows.md` | Sequential and conditional workflow patterns |
-| `references/output-patterns.md` | Template and examples patterns |
-| `testing-skills-with-subagents.md` | Pressure scenario design, rationalization tables |
-| `anthropic-best-practices.md` | Official Anthropic guidance |
-
-## Skill Creation Checklist
-
-**Use TodoWrite to track each item.**
-
-**RED Phase:**
-- [ ] Create pressure scenarios (3+ combined pressures)
-- [ ] Run WITHOUT skill—document baseline behavior
-- [ ] Identify rationalization patterns
-
-**GREEN Phase:**
-- [ ] Name: lowercase, numbers, hyphens only
-- [ ] Description: starts with "Use when...", max 1024 chars
-- [ ] Run WITH skill—verify compliance
-
-**REFACTOR Phase:**
-- [ ] Add counters for new rationalizations
-- [ ] Build rationalization table
-- [ ] Re-test until bulletproof
-
-**Package:**
-- [ ] Run `scripts/package_skill.py`
-- [ ] Commit and push
-
+---
+name: my-skill
+description: Use when doing X. Triggers on Y, Z keywords.
 ---
 
-## The Iron Law
-
-```
-NO SKILL WITHOUT A FAILING TEST FIRST
+Instructions for Claude when this skill is active.
 ```
 
-Write skill before testing? Delete it. Start over. No exceptions.
+## Skill Locations
+
+| Location | Path | Scope |
+|----------|------|-------|
+| Personal | `~/.claude/skills/<name>/SKILL.md` | All your projects |
+| Project | `.claude/skills/<name>/SKILL.md` | This project only |
+| Plugin | `<plugin>/skills/<name>/SKILL.md` | Where plugin enabled |
+
+## Frontmatter Reference
+
+**Required:**
+- `name`: Lowercase, numbers, hyphens (max 64 chars)
+- `description`: Starts with "Use when..." - triggers automatic loading
+
+**Optional:**
+- `argument-hint`: Hint for autocomplete (e.g., `[filename]`)
+- `disable-model-invocation`: `true` = only user can invoke via `/name`
+- `user-invocable`: `false` = hide from slash menu, Claude-only
+- `allowed-tools`: Tools Claude can use without permission
+- `model`: Model to use (sonnet, opus, haiku)
+- `context`: `fork` to run in isolated subagent
+- `agent`: Agent type when `context: fork` (Explore, Plan, general-purpose, or custom)
+- `hooks`: Lifecycle hooks (PreToolUse, PostToolUse, Stop)
+
+## String Substitutions
+
+| Variable | Description |
+|----------|-------------|
+| `$ARGUMENTS` | All arguments passed when invoking |
+| `$ARGUMENTS[N]` or `$N` | Specific argument by index (0-based) |
+| `${CLAUDE_SESSION_ID}` | Current session ID |
+
+Example:
+```yaml
+---
+name: fix-issue
+description: Fix a GitHub issue
+---
+
+Fix GitHub issue #$ARGUMENTS following our coding standards.
+```
+
+## Dynamic Context Injection
+
+Use `!`command`` to run shell commands before the skill loads:
+
+```yaml
+---
+name: pr-summary
+description: Summarize current PR
+---
+
+## Current state
+- Diff: !`git diff main`
+- Branch: !`git branch --show-current`
+
+Summarize the changes above.
+```
+
+## Skill Structure
+
+```
+my-skill/
+├── SKILL.md           # Main instructions (required, <500 lines)
+├── references/        # Detailed docs loaded when needed
+└── scripts/           # Scripts Claude can execute
+```
+
+Keep SKILL.md focused. Reference supporting files for details:
+```markdown
+For API details, see [reference.md](reference.md)
+```
+
+## Best Practices
+
+1. **Description is key**: Claude uses it to decide when to load the skill
+2. **Keep it lean**: Under 500 lines, use references for details
+3. **Be specific**: Direct instructions, not general guidelines
+4. **Test it**: Invoke with `/skill-name` to verify behavior
+
+## Examples
+
+**Read-only analysis skill:**
+```yaml
+---
+name: code-review
+description: Use when reviewing code for quality issues
+allowed-tools: Read, Grep, Glob
+---
+
+Review the specified files for quality issues...
+```
+
+**Forked research skill:**
+```yaml
+---
+name: deep-research
+description: Use when researching a topic thoroughly
+context: fork
+agent: Explore
+---
+
+Research $ARGUMENTS thoroughly...
+```
+
+**User-only deployment skill:**
+```yaml
+---
+name: deploy
+description: Deploy to production
+disable-model-invocation: true
+---
+
+Deploy the application...
+```
