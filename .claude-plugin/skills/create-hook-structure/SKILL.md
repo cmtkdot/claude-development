@@ -1,107 +1,89 @@
 ---
 name: create-hook-structure
-description: "Use when initializing hooks in a new project, scaffolding .claude/hooks/ directory structure, or resetting hooks organization. Triggers: scaffold hooks, init hooks, create hooks structure, setup hooks, new project hooks, hooks directory"
+description: "Use when setting up hooks in a new project or scaffolding .claude/ directory. Triggers: scaffold hooks, init hooks, setup hooks directory"
 argument-hint: "[target-dir]"
 disable-model-invocation: true
-user-invocable: true
 ---
 
 # Create Hook Structure
 
-Scaffolds the complete `.claude/hooks/` directory structure for Claude Code projects.
+Set up the minimal hooks directory structure for Claude Code projects.
 
-## Usage
+## Minimal Structure
+
+```
+.claude/
+├── settings.json        # Hook configuration
+└── hooks/               # Hook scripts
+    └── your-hook.sh
+```
+
+That's it. Hooks are just scripts referenced in settings.json.
+
+## Quick Setup
 
 ```bash
-# In current project
-/create-hook-structure
+# Create structure
+mkdir -p .claude/hooks
 
-# In specific directory
-/create-hook-structure /path/to/project
+# Create settings.json with hooks
+cat > .claude/settings.json << 'EOF'
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+EOF
 ```
 
-## What Gets Created
+## Example Hook Script
 
-```
-.claude/hooks/
-├── CHANGELOG.md              # Hook change history
-├── CLAUDE.md                 # Memory context file
-├── hooks-config.json         # Hook registry and documentation
-├── hooks-language-guide/     # Language selection guides
-│   ├── README.md
-│   ├── bash.md
-│   ├── python.md
-│   └── node.md
-├── hooks-templates/          # Event-specific templates
-│   ├── preToolUse.sh
-│   ├── postToolUse.sh
-│   ├── sessionStart.sh
-│   ├── sessionEnd.sh
-│   ├── stop.sh
-│   ├── subagentStart.sh
-│   ├── subagentStop.sh
-│   ├── userPromptSubmit.sh
-│   ├── preCompact.sh
-│   └── notification.sh
-├── hooks-user-output-templates/  # Output pattern guides
-│   └── README.md
-├── logs/                     # Runtime logs
-├── scripts/                  # Utility scripts
-│   ├── logs/
-│   └── reports/
-├── tests/                    # Test infrastructure
-│   ├── TESTING.md
-│   ├── run-all-tests.sh
-│   └── test-helper.sh
-└── utils/                    # Hook implementations
-    ├── preToolUse/
-    ├── postToolUse/
-    ├── sessionStart/
-    ├── sessionEnd/
-    ├── stop/
-    ├── subagentStart/
-    ├── subagentStop/
-    └── userPromptSubmit/
-```
-
-## Workflow
-
-1. **Run the scaffold script:**
-   ```bash
-   bash hooks/scripts/scaffold-hooks.sh [target_dir]
-   ```
-
-2. **Verify structure:**
-   ```bash
-   ls -la .claude/hooks/
-   ```
-
-3. **Start creating hooks:**
-   - Copy template from `hooks-templates/{event}.sh`
-   - Place in `utils/{event}/your-hook.sh`
-   - Add to `.claude/settings.json`
-   - Document in `hooks-config.json`
-
-## Idempotent
-
-The script is safe to run multiple times. Existing files are preserved.
-
-## Plugin Integration
-
-This structure is designed to be bundled into a reusable plugin:
-
+`.claude/hooks/lint.sh`:
 ```bash
-# Export hooks as plugin
-tar -czf claude-hooks-plugin.tar.gz .claude/hooks/
+#!/bin/bash
+set -euo pipefail
 
-# Import into another project
-tar -xzf claude-hooks-plugin.tar.gz -C /path/to/project/
+INPUT=$(cat)
+FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
+
+# Only lint code files
+[[ "$FILE" =~ \.(js|ts|py)$ ]] || exit 0
+
+# Run linter
+npm run lint --fix "$FILE" 2>/dev/null || true
+exit 0
 ```
 
-## Execute
+Make executable: `chmod +x .claude/hooks/lint.sh`
 
-Run the scaffolding now:
+## Settings Locations
 
-```bash
-bash "$CLAUDE_PROJECT_DIR/hooks/scripts/scaffold-hooks.sh"
+| File | Scope |
+|------|-------|
+| `~/.claude/settings.json` | All projects |
+| `.claude/settings.json` | This project (commit to git) |
+| `.claude/settings.local.json` | This project (don't commit) |
+
+## Plugin Hooks
+
+For plugins, put hooks in `hooks/hooks.json` at plugin root:
+```json
+{
+  "hooks": {
+    "PostToolUse": [...]
+  }
+}
 ```
+
+Use `${CLAUDE_PLUGIN_ROOT}` instead of `$CLAUDE_PROJECT_DIR`.

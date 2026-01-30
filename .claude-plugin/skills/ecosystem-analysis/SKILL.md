@@ -1,83 +1,90 @@
 ---
 name: ecosystem-analysis
-description: "Use when auditing Claude Code plugin configurations, finding integration opportunities between skills/agents/MCP/hooks, discovering what components exist, or generating optimization reports. Triggers: audit ecosystem, optimize config, integration gaps, what exists, component inventory, missing hooks"
+description: "Use when auditing Claude Code configurations, finding what skills/agents/hooks exist, or checking for integration gaps. Triggers: audit config, what exists, list components"
 argument-hint: "[scope]"
-user-invocable: true
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
-# Ecosystem Analysis Skill
+# Ecosystem Analysis
 
-> **Analogy:** Ecosystem analysis is like a dependency graph for your Claude configuration—it maps how skills, agents, MCP tools, and hooks connect, revealing gaps and redundancies just like a package manager shows missing or conflicting dependencies.
+Analyze Claude Code configurations to find skills, agents, hooks, and MCP tools.
 
-Analyze and optimize Claude Code configurations across skills, agents, MCP tools, and hooks.
+## Quick Discovery
 
-## Quick Commands
+```bash
+# Find all skills
+find . ~/.claude -name "SKILL.md" 2>/dev/null
 
-| Command | Purpose |
-|---------|---------|
-| `python3 hooks/scripts/discover-ecosystem.py` | Full ecosystem inventory |
-| `find skills -name "SKILL.md"` | Find all project skills |
-| `find .claude/agents -name "*.md"` | Find project agents |
-| `cat .mcp.json \| jq '.mcpServers \| keys'` | List MCP servers |
-| `jq '.hooks' .claude/settings.json` | View configured hooks |
+# Find all agents
+find . ~/.claude -name "*.md" -path "*/agents/*" 2>/dev/null
 
-## Discovery Workflow
+# List MCP servers
+cat .mcp.json 2>/dev/null | jq -r '.mcpServers | keys[]'
 
-1. **Inventory** - Run discover-ecosystem.py to collect all components
-2. **Analyze** - Identify gaps, redundancies, integration opportunities
-3. **Report** - Generate optimization recommendations
-4. **Implement** - Create missing hooks, update agent skills
+# Show configured hooks
+cat .claude/settings.json 2>/dev/null | jq '.hooks'
+```
 
-## Integration Patterns
+## Configuration Locations
 
-### Skill → Hook Integration
+| Component | Project | Personal | Plugin |
+|-----------|---------|----------|--------|
+| Skills | `.claude/skills/` | `~/.claude/skills/` | `<plugin>/skills/` |
+| Agents | `.claude/agents/` | `~/.claude/agents/` | `<plugin>/agents/` |
+| Hooks | `.claude/settings.json` | `~/.claude/settings.json` | `<plugin>/hooks/hooks.json` |
+| MCP | `.mcp.json` | `~/.claude/.mcp.json` | `<plugin>/.mcp.json` |
+
+## Integration Opportunities
+
+### Skill + Hook
+
+Add validation hooks for skills that modify files:
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Write|Edit",
+      "hooks": [{
+        "type": "command",
+        "command": "npm run lint:fix"
+      }]
+    }]
+  }
+}
+```
+
+### Agent + Skills
+
+Preload skills into agents:
 ```yaml
-hooks:
-  PreToolUse:
-    - matcher: "ToolName"
-      hooks:
-        - type: command
-          command: "hooks/scripts/validate.sh"
+---
+name: my-agent
+skills:
+  - api-conventions
+  - error-handling
+---
 ```
 
-### Skill → MCP Integration
-```yaml
-hooks:
-  PreToolUse:
-    - matcher: "mcp__servername__.*"
-      hooks:
-        - type: command
-          command: "hooks/scripts/mcp-audit.sh"
+### MCP + Hooks
+
+Add hooks for MCP tool validation:
+```json
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "mcp__database__.*",
+      "hooks": [{
+        "type": "command",
+        "command": "./validate-query.sh"
+      }]
+    }]
+  }
+}
 ```
 
-### Skill → Subagent Integration
-```yaml
-# In agent definition
-skills: skill-one, skill-two
-```
+## Gap Analysis
 
-## Gap Analysis Checklist
-
-- [ ] Skills without hooks → Add validation hooks
-- [ ] Agents without skills → Add relevant skills to `skills:` field
-- [ ] MCP servers without hooks → Add `mcp__server__*` matchers
-- [ ] Redundant configurations → Consolidate
-
-## Output Format
-
-```markdown
-## Ecosystem Report
-
-### Inventory
-- Skills: X
-- Agents: Y
-- MCP Servers: Z
-- Hooks Configured: W
-
-### Gaps Found
-1. [gap with recommendation]
-
-### Generated Configurations
-[hook/skill/agent configs]
-```
+Check for:
+- Skills without validation hooks
+- Agents without relevant skills preloaded
+- MCP servers without audit hooks
+- Duplicate configurations across locations
