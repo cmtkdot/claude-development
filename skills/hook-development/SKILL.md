@@ -9,6 +9,35 @@ disable-model-invocation: true
 
 Hooks run scripts automatically at specific points in Claude's workflow. Unlike CLAUDE.md instructions which are advisory, hooks are deterministic.
 
+## Quick Setup (Scaffolding)
+
+```bash
+# Create structure
+mkdir -p .claude/hooks
+
+# Create settings.json with a basic hook
+cat > .claude/settings.json << 'EOF'
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+EOF
+```
+
+For plugins, use `hooks/hooks.json` at plugin root with `${CLAUDE_PLUGIN_ROOT}`.
+
 ## Hook Events
 
 | Event | When | Matcher | Can Block |
@@ -234,3 +263,11 @@ Add `once: true` to run only once per session.
 - Keep PreToolUse < 100ms
 - Exit 0 for success, 2 to block
 - Validate JSON input exists before parsing
+
+## Supporting Files
+
+For deeper content, see:
+- [hooks-templates/](hooks-templates/) - Ready-to-use hook script templates
+- [examples/](examples/) - Pattern examples (bash, python, node)
+- [hooks-language-guide/](hooks-language-guide/) - Language-specific guides
+- [references/](references/) - Best practices, troubleshooting, testing

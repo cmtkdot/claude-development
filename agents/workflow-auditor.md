@@ -3,7 +3,7 @@ name: workflow-auditor
 description: "Use when validating overall plugin architecture, finding redundant/missing components, reviewing YAML configurations for optimization, or performing code review on agentic systems. Triggers: audit workflow, optimize configuration, architecture review, redundancy check, missing integrations, tool utilization analysis"
 tools: [Read, Write, Edit, Grep, Glob, Bash, Task]
 model: inherit
-skills: [ecosystem-analysis, writing-skills]
+skills: [ecosystem-analysis]
 ---
 
 <instructions>

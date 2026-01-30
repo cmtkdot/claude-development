@@ -61,10 +61,15 @@ if grep -E '"/Users/|"/home/|/tmp/' "$FILE_PATH" 2>/dev/null | grep -qv 'CLAUDE_
     WARNINGS="${WARNINGS}* Hardcoded paths detected (use \$CLAUDE_PROJECT_DIR)\n"
 fi
 
-# Output errors first (blocking)
+# Output errors as context (PostToolUse can't block, only PreToolUse can)
 if [ -n "$ERRORS" ]; then
-    echo -e "Hook lint ERRORS:\n$ERRORS" >&2
-    exit 2  # Block on errors
+    jq -n --arg errors "$ERRORS" '{
+        hookSpecificOutput: {
+            hookEventName: "PostToolUse",
+            additionalContext: ("Hook lint ERRORS (fix required):\n" + $errors)
+        }
+    }'
+    exit 0
 fi
 
 # Output warnings (non-blocking)

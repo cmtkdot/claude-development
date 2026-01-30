@@ -1,91 +1,69 @@
 # claude-toolkit
 
-Toolkit for creating, auditing, and validating Claude Code skills, agents, and hooks with TDD methodology.
+Toolkit for creating and validating Claude Code skills, agents, and hooks with TDD methodology.
 
 ## Features
 
-- **9 Specialized Agents** - Creators and auditors for skills, agents, hooks, and commands
-- **4 Skills** - TDD workflows for skills, hooks, and ecosystem analysis
+- **5 Specialized Agents** - Creators with built-in audit functionality
+- **3 Skills** - TDD workflows for skills, hooks, and ecosystem analysis
 - **14+ Validation Scripts** - Pre/post tool hooks for quality enforcement
-- **4 Slash Commands** - Quick access to development workflows
 
 ## Quick Start
 
 ```bash
-# Clone the repository
 git clone https://github.com/cmtkdot/claude-toolkit.git
 cd claude-toolkit
 ```
 
 ## Usage
 
-### Creating Components
-
 | Goal | Command |
 |------|---------|
-| Create a skill | `spawn skill-creator` or `/skill-development` |
-| Create an agent | `spawn agent-creator` or `/agent-development` |
-| Create a hook | `spawn hook-creator` or `/hook-development` |
-| Create a command | `/command-development` |
+| Decide what to build | `spawn starter-agent` |
+| Create a skill | `spawn skill-creator` |
+| Create an agent | `spawn agent-creator` |
+| Create a hook | `spawn hook-creator` |
+| Audit architecture | `spawn workflow-auditor` |
 
-### Auditing Components
-
-| Goal | Command |
-|------|---------|
-| Audit a skill | `spawn skill-auditor` |
-| Audit an agent | `spawn subagent-auditor` |
-| Audit a command | `spawn slash-command-auditor` |
-| Full architecture review | `spawn workflow-auditor` |
-| Find integration gaps | `spawn skill-router` |
+Note: Creators include audit functionality via Stop hooks. No separate auditor agents needed.
 
 ## Directory Structure
 
 ```
 claude-toolkit/
 ├── .claude-plugin/
-│   ├── plugin.json           # Plugin manifest
-│   ├── settings.json         # Hook configuration
-│   ├── CLAUDE.md             # Plugin context
-│   ├── commands/             # 4 slash commands
-│   ├── agents/               # 9 specialized agents
-│   ├── skills/               # 4 skills
-│   └── hooks/                # Validation scripts
+│   └── plugin.json            # Plugin manifest (ONLY this goes here)
+├── agents/                    # 5 specialized agents
+├── skills/                    # 3 skills
+├── hooks/
+│   ├── hooks.json             # Hook configuration
+│   └── scripts/               # Validation scripts
 ├── scripts/
 │   └── sync-plugin.sh
 └── README.md
 ```
 
+Per official docs: Only `plugin.json` goes in `.claude-plugin/`. All other directories at plugin root.
+
 ## Agents
 
-### Creators
-| Agent | Purpose |
-|-------|---------|
-| `starter-agent` | Decide what to build (start here) |
-| `skill-creator` | Create SKILL.md files with TDD |
-| `agent-creator` | Create agent configuration files |
-| `hook-creator` | Create and debug hook scripts |
-
-### Auditors
-| Agent | Purpose |
-|-------|---------|
-| `skill-auditor` | Review SKILL.md quality and compliance |
-| `subagent-auditor` | Review agent configuration quality |
-| `slash-command-auditor` | Review slash command quality |
-| `workflow-auditor` | Full architecture review |
-| `skill-router` | Find integration gaps and opportunities |
+| Agent | Purpose | Triggers |
+|-------|---------|----------|
+| `starter-agent` | Decide what to build | "where do I start", "hook or skill" |
+| `skill-creator` | Create + audit skills | "create skill", "audit skill" |
+| `agent-creator` | Create + audit agents | "create agent", "audit agent" |
+| `hook-creator` | Create + debug hooks | "create hook", "hook not working" |
+| `workflow-auditor` | Architecture review | "audit workflow", "find gaps" |
 
 ## Skills
 
 | Skill | Purpose |
 |-------|---------|
-| `writing-skills` | TDD methodology for documentation |
-| `hook-development` | 6-phase hook creation workflow |
-| `create-hook-structure` | Scaffold hooks directory structure |
+| `writing-skills` | TDD methodology for skill documentation |
+| `hook-development` | Hook creation workflow + scaffolding |
 | `ecosystem-analysis` | Analyze integration patterns |
 
 ## TDD Methodology
-
-This toolkit follows Test-Driven Development for Documentation:
 
 1. **RED** - Create pressure scenarios, run without skill/agent, document failures
 2. **GREEN** - Write minimal skill/agent that passes scenarios
@@ -100,24 +78,18 @@ This toolkit follows Test-Driven Development for Documentation:
 | PostToolUse | lint-skill.sh | Quality warnings for skills |
 | PostToolUse | lint-agent.sh | Quality warnings for agents |
 | PostToolUse | lint-hook.sh | Quality warnings for hooks |
-| Stop | *-audit-report.sh | Session summary reports |
+| PostToolUse | check-skill-size.sh | Size warnings (>500 lines) |
 
-## Local Development
+## Syncing
 
-1. Clone the repository
-2. The plugin auto-loads from `.claude-plugin/plugin.json`
-3. Validation hooks are configured in `.claude-plugin/settings.json`
-
-### Syncing to Global Plugins
-
-After making local changes, sync to the global plugins cache:
+After making changes, sync to global plugins cache:
 
 ```bash
-npm run sync        # Copy plugin to ~/.claude/plugins/cache
-npm run sync:check  # Check if sync is needed
+npm run sync        # Sync plugin to ~/.claude/plugins/cache
+npm run sync:check  # Check if sync needed
 ```
 
-Restart Claude Code after syncing to load the updated plugin.
+Restart Claude Code after syncing to load changes.
 
 ## Requirements
 

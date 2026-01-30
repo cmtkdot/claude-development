@@ -2,6 +2,7 @@
 name: ecosystem-analysis
 description: "Use when auditing Claude Code configurations, finding what skills/agents/hooks exist, or checking for integration gaps. Triggers: audit config, what exists, list components"
 argument-hint: "[scope]"
+disable-model-invocation: true
 ---
 
 # Ecosystem Analysis
@@ -11,11 +12,11 @@ Analyze Claude Code configurations to find skills, agents, hooks, and MCP tools.
 ## Quick Discovery
 
 ```bash
-# Find all skills
-find . ~/.claude -name "SKILL.md" 2>/dev/null
+# Find all skills (use glob patterns for speed)
+ls .claude/skills/*/SKILL.md ~/.claude/skills/*/SKILL.md 2>/dev/null
 
 # Find all agents
-find . ~/.claude -name "*.md" -path "*/agents/*" 2>/dev/null
+ls .claude/agents/*.md ~/.claude/agents/*.md 2>/dev/null
 
 # List MCP servers
 cat .mcp.json 2>/dev/null | jq -r '.mcpServers | keys[]'

@@ -3,7 +3,7 @@ name: agent-creator
 description: "Use when creating new agent .md files, writing agent frontmatter/YAML, configuring agent tools and model selection, adding skills to agents, or debugging agent invocation issues. Triggers: create agent, new agent, subagent, agent frontmatter, agent tools, agent skills, agent not working"
 tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
 model: sonnet
-skills: [writing-skills, hook-development, ecosystem-analysis]
+skills: []
 hooks:
   PreToolUse:
     - matcher: "Write|Edit"
