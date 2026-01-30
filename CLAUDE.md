@@ -1,13 +1,13 @@
-# plugin-dev: Claude Code Plugin Development Toolkit
+# claude-toolkit: Skills, Agents & Hooks
 
-Complete toolkit for creating, testing, auditing, and optimizing Claude Code plugins with TDD methodology.
+Toolkit for creating, auditing, and validating Claude Code skills, agents, and hooks with TDD methodology.
 
 ---
 
 ## Quick Start
 
-| Goal | Agent/Skill |
-|------|-------------|
+| Goal | Agent |
+|------|-------|
 | Create a skill | Spawn `skill-creator` |
 | Create an agent | Spawn `agent-creator` |
 | Create a hook | Spawn `hook-creator` |
@@ -22,44 +22,32 @@ Complete toolkit for creating, testing, auditing, and optimizing Claude Code plu
 ## Directory Structure
 
 ```
-plugin-dev/
+claude-toolkit/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin manifest
-├── agents/                    # 8 specialized subagents
-│   ├── skill-creator.md
-│   ├── agent-creator.md
-│   ├── hook-creator.md
-│   ├── skill-auditor.md
-│   ├── subagent-auditor.md
-│   ├── slash-command-auditor.md
-│   ├── workflow-auditor.md
-│   └── skill-router.md
-├── skills/                    # 4 skills
-│   ├── writing-skills/
-│   ├── hook-development/
-│   ├── create-hook-structure/
-│   └── ecosystem-analysis/
-├── hooks/
-│   ├── scripts/              # Validation scripts
-│   │   ├── agent-tools/
-│   │   ├── skill-tools/
-│   │   ├── hook-tools/
-│   │   └── ecosystem/
-│   └── utils/
-└── commands/                  # Slash commands
+│   ├── plugin.json           # Plugin manifest
+│   ├── settings.json         # Hook configuration
+│   ├── CLAUDE.md             # Plugin context
+│   ├── agents/               # 9 specialized agents
+│   ├── skills/               # 4 skills
+│   ├── hooks/                # Validation scripts
+│   └── commands/             # Slash commands
+├── scripts/
+│   └── sync-plugin.sh
+└── README.md
 ```
 
 ---
 
 ## Agents
 
-### Creator Trilogy
+### Creators
 
 | Agent | Purpose | Invoke When |
 |-------|---------|-------------|
+| `starter-agent` | Decide what to build | "where do I start", "what should I build" |
 | `skill-creator` | Create SKILL.md with TDD | "create skill", "new skill" |
 | `agent-creator` | Create agent .md files | "create agent", "new subagent" |
-| `hook-creator` | Create/debug hook scripts | "create hook", "hook not working" |
+| `hook-creator` | Create/debug hooks | "create hook", "hook not working" |
 
 ### Auditors
 
@@ -86,35 +74,30 @@ plugin-dev/
 
 ## Validation Scripts
 
+### Skill Tools (`hooks/scripts/skill-tools/`)
+
+| Script | Event | Purpose |
+|--------|-------|---------|
+| `validate-skill-metadata.py` | PreToolUse | Block invalid SKILL.md |
+| `lint-skill.sh` | PostToolUse | Quality warnings |
+| `check-skill-size.sh` | PostToolUse | Size checks |
+
 ### Agent Tools (`hooks/scripts/agent-tools/`)
 
 | Script | Event | Purpose |
 |--------|-------|---------|
 | `validate-agent.sh` | PreToolUse | Block on missing fields |
 | `lint-agent.sh` | PostToolUse | Quality warnings |
-| `agent-audit-report.sh` | Stop | Session summary |
-
-### Skill Tools (`hooks/scripts/skill-tools/`)
-
-| Script | Event | Purpose |
-|--------|-------|---------|
-| `validate-skill-metadata.py` | PreToolUse | Metadata validation |
-| `lint-skill.sh` | PostToolUse | Structure warnings |
-| `check-skill-size.sh` | PostToolUse | Size checks |
-| `skill-audit-report.sh` | Stop | Session summary |
 
 ### Hook Tools (`hooks/scripts/hook-tools/`)
 
 | Script | Event | Purpose |
 |--------|-------|---------|
 | `lint-hook.sh` | PostToolUse | Hook quality checks |
-| `hook-audit-report.sh` | Stop | Session summary |
 
 ---
 
 ## TDD Methodology
-
-This plugin follows **Test-Driven Development for Documentation**:
 
 1. **RED**: Create pressure scenarios, run WITHOUT skill/agent, document failures
 2. **GREEN**: Write minimal skill/agent that passes scenarios
@@ -141,26 +124,13 @@ This plugin follows **Test-Driven Development for Documentation**:
 
 ---
 
-## Wiring Hooks
+## Syncing
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [{
-      "matcher": "Write",
-      "hooks": [{
-        "type": "command",
-        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/validate-skill-metadata.py"
-      }]
-    }]
-  }
-}
+After making changes, sync to global plugins cache:
+
+```bash
+npm run sync        # Sync plugin to ~/.claude/plugins/cache
+npm run sync:check  # Check if sync needed
 ```
 
----
-
-## Related Documentation
-
-- `skills/hook-development/SKILL.md` - Comprehensive hook guide
-- `skills/writing-skills/SKILL.md` - TDD for documentation
-- `skills/ecosystem-analysis/SKILL.md` - Integration analysis
+Restart Claude Code after syncing to load changes.

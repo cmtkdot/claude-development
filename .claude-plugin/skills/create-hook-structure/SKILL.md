@@ -1,6 +1,8 @@
 ---
 name: create-hook-structure
 description: "Use when initializing hooks in a new project, scaffolding .claude/hooks/ directory structure, or resetting hooks organization. Triggers: scaffold hooks, init hooks, create hooks structure, setup hooks, new project hooks, hooks directory"
+argument-hint: "[target-dir]"
+disable-model-invocation: true
 user-invocable: true
 ---
 

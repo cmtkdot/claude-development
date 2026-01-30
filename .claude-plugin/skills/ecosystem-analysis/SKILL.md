@@ -1,6 +1,7 @@
 ---
 name: ecosystem-analysis
 description: "Use when auditing Claude Code plugin configurations, finding integration opportunities between skills/agents/MCP/hooks, discovering what components exist, or generating optimization reports. Triggers: audit ecosystem, optimize config, integration gaps, what exists, component inventory, missing hooks"
+argument-hint: "[scope]"
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash
 ---

@@ -3,6 +3,7 @@ name: subagent-auditor
 description: "Use when reviewing agent .md configuration files, checking agent frontmatter/YAML, evaluating role definitions, validating tool restrictions, or auditing agent prompt quality. Triggers: audit agent, review agent, agent quality, agent best practices, agent issues, agent configuration"
 tools: [Read, Grep, Glob]
 model: sonnet
+permissionMode: plan
 skills: [writing-skills, ecosystem-analysis]
 hooks:
   Stop:

@@ -1,6 +1,8 @@
 ---
 name: writing-skills
 description: "Use when creating or updating SKILL.md files, testing skills with pressure scenarios, or learning TDD for documentation. Triggers: create skill, new skill, SKILL.md template, skill frontmatter, skill testing, CSO optimization"
+argument-hint: "[skill-name]"
+disable-model-invocation: true
 context: fork
 agent: [skill-creator, skill-router, hook-creator, agent-creator]
 user-invocable: true

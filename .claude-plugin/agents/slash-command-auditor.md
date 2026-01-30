@@ -3,6 +3,7 @@ name: slash-command-auditor
 description: "Use when reviewing slash command .md files, checking command YAML frontmatter, evaluating argument patterns ($ARGUMENTS, $1/$2), validating tool restrictions (allowed-tools), or auditing dynamic context usage. Triggers: audit command, review command, slash command quality, command best practices, /command issues"
 tools: [Read, Grep, Glob]
 model: sonnet
+permissionMode: plan
 skills: [writing-skills]
 hooks:
   Stop:

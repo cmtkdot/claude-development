@@ -28,4 +28,4 @@ build/
 *.egg-info/
 
 # OS
-Thumbs.db
+Thumbs.db.claude/hooks/.cache/

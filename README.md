@@ -1,23 +1,20 @@
-# plugin-dev
+# claude-toolkit
 
-Complete toolkit for Claude Code plugin development - create, test, audit, and optimize skills, agents, hooks, and slash commands with TDD methodology.
+Toolkit for creating, auditing, and validating Claude Code skills, agents, and hooks with TDD methodology.
 
 ## Features
 
-- **8 Specialized Agents** - Creators, auditors, and orchestrators for all plugin components
-- **4 Development Skills** - TDD workflows for skills, hooks, and ecosystem analysis
+- **9 Specialized Agents** - Creators and auditors for skills, agents, hooks, and commands
+- **4 Skills** - TDD workflows for skills, hooks, and ecosystem analysis
 - **14+ Validation Scripts** - Pre/post tool hooks for quality enforcement
-- **8 Slash Commands** - Quick access to common development workflows
+- **4 Slash Commands** - Quick access to development workflows
 
 ## Quick Start
 
 ```bash
-# Install the plugin
-claude plugins install plugin-dev
-
-# Or for local development
-git clone https://github.com/cmtkdot/claude-development-plugin.git
-cd claude-development-plugin
+# Clone the repository
+git clone https://github.com/cmtkdot/claude-toolkit.git
+cd claude-toolkit
 ```
 
 ## Usage
@@ -44,66 +41,38 @@ cd claude-development-plugin
 ## Directory Structure
 
 ```
-plugin-dev/
+claude-toolkit/
 ├── .claude-plugin/
 │   ├── plugin.json           # Plugin manifest
 │   ├── settings.json         # Hook configuration
 │   ├── CLAUDE.md             # Plugin context
-│   ├── commands/             # 9 slash commands
-│   │   ├── agent-development.md
-│   │   ├── command-development.md
-│   │   ├── create-plugin.md
-│   │   ├── hook-development.md
-│   │   ├── mcp-integration.md
-│   │   ├── plugin-settings.md
-│   │   ├── plugin-structure.md
-│   │   ├── skill-development.md
-│   │   └── prime-claude-development.md
-│   ├── agents/               # 8 specialized agents
-│   │   ├── skill-creator.md
-│   │   ├── agent-creator.md
-│   │   ├── hook-creator.md
-│   │   ├── skill-auditor.md
-│   │   ├── subagent-auditor.md
-│   │   ├── slash-command-auditor.md
-│   │   ├── workflow-auditor.md
-│   │   └── skill-router.md
-│   ├── skills/               # 4 development skills
-│   │   ├── writing-skills/
-│   │   ├── hook-development/
-│   │   ├── create-hook-structure/
-│   │   └── ecosystem-analysis/
+│   ├── commands/             # 4 slash commands
+│   ├── agents/               # 9 specialized agents
+│   ├── skills/               # 4 skills
 │   └── hooks/                # Validation scripts
-│       └── scripts/
-│           ├── skill-tools/
-│           ├── agent-tools/
-│           └── hook-tools/
-├── README.md
-├── LICENSE
-└── CONTRIBUTING.md
+├── scripts/
+│   └── sync-plugin.sh
+└── README.md
 ```
 
 ## Agents
 
-### Creator Trilogy
+### Creators
 | Agent | Purpose |
 |-------|---------|
-| `skill-creator` | Create SKILL.md files with TDD methodology |
+| `starter-agent` | Decide what to build (start here) |
+| `skill-creator` | Create SKILL.md files with TDD |
 | `agent-creator` | Create agent configuration files |
 | `hook-creator` | Create and debug hook scripts |
 
-### Auditor Trilogy
+### Auditors
 | Agent | Purpose |
 |-------|---------|
 | `skill-auditor` | Review SKILL.md quality and compliance |
 | `subagent-auditor` | Review agent configuration quality |
 | `slash-command-auditor` | Review slash command quality |
-
-### Orchestrators
-| Agent | Purpose |
-|-------|---------|
 | `workflow-auditor` | Full architecture review |
-| `skill-router` | Find integration gaps and optimization opportunities |
+| `skill-router` | Find integration gaps and opportunities |
 
 ## Skills
 
@@ -112,19 +81,17 @@ plugin-dev/
 | `writing-skills` | TDD methodology for documentation |
 | `hook-development` | 6-phase hook creation workflow |
 | `create-hook-structure` | Scaffold hooks directory structure |
-| `ecosystem-analysis` | Analyze plugin integration patterns |
+| `ecosystem-analysis` | Analyze integration patterns |
 
 ## TDD Methodology
 
-This plugin follows Test-Driven Development for Documentation:
+This toolkit follows Test-Driven Development for Documentation:
 
 1. **RED** - Create pressure scenarios, run without skill/agent, document failures
 2. **GREEN** - Write minimal skill/agent that passes scenarios
 3. **REFACTOR** - Close loopholes, add rationalization counters
 
 ## Validation Hooks
-
-The plugin includes automatic validation:
 
 | Event | Hook | Purpose |
 |-------|------|---------|
@@ -141,17 +108,16 @@ The plugin includes automatic validation:
 2. The plugin auto-loads from `.claude-plugin/plugin.json`
 3. Validation hooks are configured in `.claude-plugin/settings.json`
 
-### Testing Hooks
+### Syncing to Global Plugins
+
+After making local changes, sync to the global plugins cache:
 
 ```bash
-# Test skill validation
-echo '{"tool": "Write", "file_path": "test/SKILL.md"}' | \
-  python3 .claude-plugin/hooks/scripts/skill-tools/validate-skill-metadata.py
-
-# Test agent validation
-echo '{"tool": "Write", "file_path": "agents/test.md"}' | \
-  bash .claude-plugin/hooks/scripts/agent-tools/validate-agent.sh
+npm run sync        # Copy plugin to ~/.claude/plugins/cache
+npm run sync:check  # Check if sync is needed
 ```
+
+Restart Claude Code after syncing to load the updated plugin.
 
 ## Requirements
 
@@ -166,7 +132,3 @@ MIT
 ## Author
 
 Jay (jay@cmtkdot.com)
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
