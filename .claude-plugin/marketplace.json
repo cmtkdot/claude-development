@@ -1,32 +1,20 @@
 {
-  "name": "claude-toolkit",
+  "name": "cmtkdot",
   "owner": {
     "name": "Jay",
     "email": "jay@cmtkdot.com"
   },
   "metadata": {
-    "description": "Skills, agents, and hooks for Claude Code - create, audit, and validate with TDD methodology",
-    "version": "1.2.0"
+    "description": "Claude Code toolkit - skills, agents, and hooks for TDD development",
+    "version": "1.3.0"
   },
   "plugins": [
     {
-      "name": "claude-toolkit",
+      "name": "claude-development",
       "source": "./",
-      "description": "Skills, agents, and hooks for Claude Code",
-      "version": "1.2.0",
-      "strict": false,
-      "agents": [
-        "./agents/starter-agent.md",
-        "./agents/skill-creator.md",
-        "./agents/agent-creator.md",
-        "./agents/hook-creator.md",
-        "./agents/workflow-auditor.md"
-      ],
-      "skills": [
-        "./skills/writing-skills",
-        "./skills/hook-development",
-        "./skills/ecosystem-analysis"
-      ]
+      "description": "Skills, agents, and hooks for Claude Code - create, audit, and validate with TDD methodology",
+      "version": "1.3.0",
+      "strict": false
     }
   ]
 }
