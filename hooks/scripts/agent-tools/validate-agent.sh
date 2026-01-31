@@ -80,8 +80,8 @@ fi
 # Validate model field if present (first match only)
 MODEL=$(echo "$FRONTMATTER" | grep -m1 -E "^model:" | sed 's/^model:[[:space:]]*//; s/["'"'"']//g' | tr -d ' ' || true)
 if [[ -n "$MODEL" ]]; then
-    if [[ ! "$MODEL" =~ ^(haiku|sonnet|opus)$ ]]; then
-        echo "WARNING: Model '$MODEL' may not be valid. Expected: haiku, sonnet, or opus" >&2
+    if [[ ! "$MODEL" =~ ^(haiku|sonnet|opus|inherit)$ ]]; then
+        echo "WARNING: Model '$MODEL' may not be valid. Expected: haiku, sonnet, opus, or inherit" >&2
     fi
 fi
 

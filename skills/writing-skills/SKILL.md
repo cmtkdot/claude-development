@@ -7,6 +7,8 @@ disable-model-invocation: true
 
 # Writing Skills
 
+> **Before creating skills, check latest docs:** `/docs skills` for current syntax and best practices.
+
 Skills extend Claude's capabilities. Create a `SKILL.md` file with instructions, and Claude adds it to its toolkit.
 
 ## Quick Start
@@ -143,3 +145,8 @@ disable-model-invocation: true
 
 Deploy the application...
 ```
+
+## Related Components
+
+- **Skills**: `hook-development`, `ecosystem-analysis`
+- **Used by agents**: `skill-creator`, `agent-creator`

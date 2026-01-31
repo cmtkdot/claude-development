@@ -1,9 +1,13 @@
 ---
 name: workflow-auditor
 description: "Use when validating overall plugin architecture, finding redundant/missing components, reviewing YAML configurations for optimization, or performing code review on agentic systems. Triggers: audit workflow, optimize configuration, architecture review, redundancy check, missing integrations, tool utilization analysis"
-tools: [Read, Write, Edit, Grep, Glob, Bash, Task]
+tools: [Read, Write, Edit, Grep, Glob, Bash, Task, TodoWrite]
 model: inherit
 skills: [ecosystem-analysis]
+hooks:
+  Stop:
+    - type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/audit/audit-report.sh"'
 ---
 
 <instructions>

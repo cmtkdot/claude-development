@@ -6,8 +6,7 @@ __pycache__/
 
 # Claude Code local files
 *.local.md
-.claude/settings.local.json
-.claude/hooks/logs/
+.claude/
 
 # Node
 node_modules/
@@ -28,4 +27,4 @@ build/
 *.egg-info/
 
 # OS
-Thumbs.db.claude/hooks/.cache/
+Thumbs.db

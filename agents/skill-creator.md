@@ -1,24 +1,24 @@
 ---
 name: skill-creator
 description: "Use when creating new SKILL.md files, writing skill metadata/frontmatter, testing skills with pressure scenarios, debugging skill discovery issues, or applying TDD methodology to documentation. Triggers: create skill, new skill, skill not found, skill not loading, SKILL.md, skill frontmatter, CSO optimization"
-tools: [Read, Write, Edit, Glob, Grep, Bash, Task]
+tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
 model: sonnet
 skills: [writing-skills]
 hooks:
   PreToolUse:
     - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/validate-skill-metadata.py"
+      type: command
+      command: 'python3 "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/validate-skill-metadata.py"'
   PostToolUse:
     - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/lint-skill.sh"
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/lint-skill.sh"'
+    - matcher: "Write|Edit"
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/check-skill-size.sh"'
   Stop:
-    - hooks:
-        - type: command
-          command: "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/skill-audit-report.sh"
+    - type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/skill-tools/skill-audit-report.sh"'
 ---
 <instructions>
 	<identity>

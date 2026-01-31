@@ -7,19 +7,16 @@ skills: [hook-development]
 hooks:
   PreToolUse:
     - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/hook-tools/lint-hook.sh'
-          once: true
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/hook-tools/lint-hook.sh"'
+      once: true
   PostToolUse:
     - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/hook-tools/lint-hook.sh'
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/hook-tools/lint-hook.sh"'
   Stop:
-    - hooks:
-        - type: command
-          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/hook-tools/hook-audit-report.sh'
+    - type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/hook-tools/hook-audit-report.sh"'
 ---
 
 <instructions>

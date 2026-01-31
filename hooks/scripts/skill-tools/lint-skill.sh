@@ -1,6 +1,10 @@
 #!/bin/bash
-# Lints skill files after writing
+# Lints skill files after writing - quality checks
+# PostToolUse hook - non-blocking warnings
 set -euo pipefail
+
+# Check jq dependency
+command -v jq >/dev/null 2>&1 || { echo "Warning: jq not installed" >&2; exit 0; }
 
 INPUT=$(cat)
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
@@ -10,31 +14,47 @@ if [[ ! "$FILE_PATH" =~ SKILL\.md$ ]]; then
     exit 0
 fi
 
-ERRORS=""
-
-# Check file size (warn if over 500 lines)
-LINE_COUNT=$(wc -l < "$FILE_PATH" 2>/dev/null || echo "0")
-if [ "$LINE_COUNT" -gt 500 ]; then
-    ERRORS="${ERRORS}* Warning: Skill has $LINE_COUNT lines (recommend <500)\n"
+# Check if file exists
+if [[ ! -f "$FILE_PATH" ]]; then
+    exit 0
 fi
+
+WARNINGS=()
 
 # Check for workflow summary in description (common mistake)
-if grep -q "description:.*then.*then\|description:.*step.*step\|description:.*first.*then" "$FILE_PATH" 2>/dev/null; then
-    ERRORS="${ERRORS}* Description may contain workflow summary (should only have triggers)\n"
+if grep -qE 'description:.*then.*then|description:.*step.*step|description:.*first.*then' "$FILE_PATH" 2>/dev/null; then
+    WARNINGS+=("Description may contain workflow summary (should only have triggers)")
 fi
 
-# Check hooks syntax if present
+# Check description starts with "Use when"
+DESC=$(grep -m1 "^description:" "$FILE_PATH" | sed 's/^description:[[:space:]]*//' || true)
+if [[ -n "$DESC" && ! "$DESC" =~ ^\"?Use\ when ]]; then
+    WARNINGS+=("Description should start with 'Use when...'")
+fi
+
+# Check hooks syntax if present - validate flat format
 if grep -q "^hooks:" "$FILE_PATH" 2>/dev/null; then
-    # Verify hook events are valid
-    if grep -E "^\s+\w+:" "$FILE_PATH" | grep -vE "(PreToolUse|PostToolUse|Stop|matcher|hooks|type|command|prompt|once):" > /dev/null 2>&1; then
-        ERRORS="${ERRORS}* Unknown hook event (valid: PreToolUse, PostToolUse, Stop)\n"
+    # Check for nested hooks: array (wrong format)
+    if grep -qE '^\s+hooks:\s*$' "$FILE_PATH" 2>/dev/null; then
+        WARNINGS+=("Hook format may be wrong - use flat format (type: at same level as matcher:)")
     fi
 fi
 
-if [ -n "$ERRORS" ]; then
-    echo -e "$ERRORS" >&2
-    exit 0  # Non-blocking warnings
+# Check for missing references to supporting files
+if grep -qE '\[.*\]\(references?/' "$FILE_PATH" 2>/dev/null; then
+    REF_DIR=$(dirname "$FILE_PATH")/references
+    if [[ ! -d "$REF_DIR" ]]; then
+        WARNINGS+=("References to references/ but directory doesn't exist")
+    fi
 fi
 
-echo "Skill lint passed"
+if [[ ${#WARNINGS[@]} -gt 0 ]]; then
+    echo "Skill lint warnings for $FILE_PATH:"
+    for warning in "${WARNINGS[@]}"; do
+        echo "  - $warning"
+    done
+else
+    echo "Skill lint passed: $FILE_PATH"
+fi
+
 exit 0

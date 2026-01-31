@@ -1,18 +1,19 @@
-# claude-toolkit
+# cmtkdot
 
-Toolkit for creating and validating Claude Code skills, agents, and hooks with TDD methodology.
+Claude Code toolkit for creating and validating skills, agents, and hooks with TDD methodology.
 
 ## Features
 
-- **5 Specialized Agents** - Creators with built-in audit functionality
+- **5 Specialized Agents** - Creators with built-in audit via Stop hooks
 - **3 Skills** - TDD workflows for skills, hooks, and ecosystem analysis
-- **14+ Validation Scripts** - Pre/post tool hooks for quality enforcement
+- **Agent-scoped validation** - Hooks run only when using creator agents
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/cmtkdot/claude-toolkit.git
-cd claude-toolkit
+git clone https://github.com/cmtkdot/cmtkdot.git
+cd cmtkdot
+npm run sync
 ```
 
 ## Usage
@@ -25,25 +26,20 @@ cd claude-toolkit
 | Create a hook | `spawn hook-creator` |
 | Audit architecture | `spawn workflow-auditor` |
 
-Note: Creators include audit functionality via Stop hooks. No separate auditor agents needed.
-
 ## Directory Structure
 
 ```
-claude-toolkit/
+cmtkdot/
 ├── .claude-plugin/
-│   └── plugin.json            # Plugin manifest (ONLY this goes here)
+│   ├── plugin.json            # Plugin manifest
+│   └── marketplace.json       # Marketplace catalog
 ├── agents/                    # 5 specialized agents
 ├── skills/                    # 3 skills
 ├── hooks/
-│   ├── hooks.json             # Hook configuration
-│   └── scripts/               # Validation scripts
-├── scripts/
-│   └── sync-plugin.sh
+│   ├── hooks.json             # Global hooks (logging only)
+│   └── scripts/               # Hook scripts
 └── README.md
 ```
-
-Per official docs: Only `plugin.json` goes in `.claude-plugin/`. All other directories at plugin root.
 
 ## Agents
 
@@ -63,22 +59,39 @@ Per official docs: Only `plugin.json` goes in `.claude-plugin/`. All other direc
 | `hook-development` | Hook creation workflow + scaffolding |
 | `ecosystem-analysis` | Analyze integration patterns |
 
+## Hook Architecture
+
+**Global hooks** (hooks.json): Empty by design - no global overhead.
+
+**Agent-scoped hooks** (in frontmatter): Validation runs only when using creator agents.
+
+| Agent | PreToolUse | PostToolUse | Stop |
+|-------|------------|-------------|------|
+| skill-creator | validate-skill-metadata.py | lint-skill.sh, check-skill-size.sh | skill-audit-report.sh |
+| agent-creator | validate-agent.sh | lint-agent.sh | agent-audit-report.sh |
+| hook-creator | lint-hook.sh | lint-hook.sh | hook-audit-report.sh |
+| starter-agent | - | - | discovery-report.sh |
+| workflow-auditor | - | - | audit-report.sh |
+
+### Hook Format
+
+```yaml
+hooks:
+  PreToolUse:
+    - matcher: "Write|Edit"
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate.sh"'
+      once: true
+  Stop:
+    - type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/report.sh"'
+```
+
 ## TDD Methodology
 
 1. **RED** - Create pressure scenarios, run without skill/agent, document failures
 2. **GREEN** - Write minimal skill/agent that passes scenarios
 3. **REFACTOR** - Close loopholes, add rationalization counters
-
-## Validation Hooks
-
-| Event | Hook | Purpose |
-|-------|------|---------|
-| PreToolUse | validate-skill-metadata.py | Block invalid SKILL.md writes |
-| PreToolUse | validate-agent.sh | Block invalid agent writes |
-| PostToolUse | lint-skill.sh | Quality warnings for skills |
-| PostToolUse | lint-agent.sh | Quality warnings for agents |
-| PostToolUse | lint-hook.sh | Quality warnings for hooks |
-| PostToolUse | check-skill-size.sh | Size warnings (>500 lines) |
 
 ## Syncing
 
@@ -95,7 +108,8 @@ Restart Claude Code after syncing to load changes.
 
 - Claude Code CLI
 - Python 3.8+ (for validation scripts)
-- Bash (for shell scripts)
+- jq (for hook scripts)
+- Bash
 
 ## License
 

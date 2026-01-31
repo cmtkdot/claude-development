@@ -3,23 +3,20 @@ name: agent-creator
 description: "Use when creating new agent .md files, writing agent frontmatter/YAML, configuring agent tools and model selection, adding skills to agents, or debugging agent invocation issues. Triggers: create agent, new agent, subagent, agent frontmatter, agent tools, agent skills, agent not working"
 tools: [Read, Write, Edit, Glob, Grep, Bash, TodoWrite]
 model: sonnet
-skills: []
+skills: [writing-skills]
 hooks:
   PreToolUse:
     - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/agent-tools/validate-agent.sh'
-          once: true
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/agent-tools/validate-agent.sh"'
+      once: true
   PostToolUse:
     - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/agent-tools/lint-agent.sh'
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/agent-tools/lint-agent.sh"'
   Stop:
-    - hooks:
-        - type: command
-          command: 'bash "${CLAUDE_PLUGIN_ROOT}"/hooks/scripts/agent-tools/agent-audit-report.sh'
+    - type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/agent-tools/agent-audit-report.sh"'
 ---
 
 <instructions>

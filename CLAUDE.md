@@ -1,6 +1,6 @@
-# claude-toolkit: Skills, Agents & Hooks
+# cmtkdot: Skills, Agents & Hooks
 
-Toolkit for creating and validating Claude Code skills, agents, and hooks with TDD methodology.
+Claude Code toolkit for creating and validating skills, agents, and hooks with TDD methodology.
 
 ---
 
@@ -19,18 +19,17 @@ Toolkit for creating and validating Claude Code skills, agents, and hooks with T
 ## Directory Structure
 
 ```
-claude-toolkit/
+cmtkdot/
 ├── .claude-plugin/
-│   └── plugin.json            # Plugin manifest (ONLY this goes here)
+│   ├── plugin.json            # Plugin manifest
+│   └── marketplace.json       # Marketplace catalog
 ├── agents/                    # 5 specialized agents
 ├── skills/                    # 3 skills
 ├── hooks/
-│   ├── hooks.json             # Hook configuration
-│   └── scripts/               # Validation scripts
+│   ├── hooks.json             # Global hooks (logging, lifecycle)
+│   └── scripts/               # Hook scripts
 └── README.md
 ```
-
-Per official docs: Only `plugin.json` goes in `.claude-plugin/`. All other directories at plugin root.
 
 ---
 
@@ -58,16 +57,35 @@ Note: Creators include audit functionality via Stop hooks. No separate auditor a
 
 ---
 
-## Validation Hooks
+## Hook Architecture
 
-| Script | Event | Purpose |
-|--------|-------|---------|
-| `validate-skill-metadata.py` | PreToolUse | Block invalid SKILL.md |
-| `validate-agent.sh` | PreToolUse | Block invalid agents |
-| `lint-skill.sh` | PostToolUse | Quality warnings |
-| `lint-agent.sh` | PostToolUse | Quality warnings |
-| `lint-hook.sh` | PostToolUse | Hook quality checks |
-| `check-skill-size.sh` | PostToolUse | Size warnings |
+**Global hooks** (hooks.json) - empty by design. All validation is agent-scoped.
+
+**Agent-scoped hooks** (in agent frontmatter) - run only when agent is active:
+
+| Agent | Hooks |
+|-------|-------|
+| `skill-creator` | validate-skill-metadata.py, lint-skill.sh, check-skill-size.sh |
+| `agent-creator` | validate-agent.sh, lint-agent.sh |
+| `hook-creator` | lint-hook.sh |
+
+---
+
+## Hook Format (Flat Structure)
+
+```yaml
+hooks:
+  PreToolUse:
+    - matcher: "Write|Edit"
+      type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate.sh"'
+      once: true
+  Stop:
+    - type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/report.sh"'
+```
+
+Key: `matcher`, `type`, `command`, `once` all at same level (no nested `hooks:` array).
 
 ---
 

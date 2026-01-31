@@ -7,6 +7,8 @@ disable-model-invocation: true
 
 # Hook Development
 
+> **Before creating hooks, check latest docs:** `/docs hooks` or `/docs hooks-guide` for current syntax and best practices.
+
 Hooks run scripts automatically at specific points in Claude's workflow. Unlike CLAUDE.md instructions which are advisory, hooks are deterministic.
 
 ## Quick Setup (Scaffolding)
@@ -271,3 +273,8 @@ For deeper content, see:
 - [examples/](examples/) - Pattern examples (bash, python, node)
 - [hooks-language-guide/](hooks-language-guide/) - Language-specific guides
 - [references/](references/) - Best practices, troubleshooting, testing
+
+## Related Components
+
+- **Skills**: `writing-skills`, `ecosystem-analysis`
+- **Used by agents**: `hook-creator`, `workflow-auditor`

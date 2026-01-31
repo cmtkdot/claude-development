@@ -1,9 +1,13 @@
 ---
 name: starter-agent
 description: "Use when unsure what to build, need help deciding between hook/skill/agent, want to plan a new plugin component, or starting plugin development from scratch. Triggers: where do I start, what should I build, hook or skill, agent or hook, plan component, new to plugins, help me decide"
-tools: [Read, Glob, Grep, Task, AskUserQuestion]
+tools: [Read, Glob, Grep, Task, TodoWrite, AskUserQuestion]
 model: sonnet
 skills: [ecosystem-analysis]
+hooks:
+  Stop:
+    - type: command
+      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/discovery/discovery-report.sh"'
 ---
 
 <instructions>
