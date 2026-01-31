@@ -59,9 +59,11 @@ Note: Creators include audit functionality via Stop hooks. No separate auditor a
 
 ## Hook Architecture
 
-**Global hooks** (hooks.json) - empty by design. All validation is agent-scoped.
+**Global hooks** (hooks.json) - logging and lifecycle only:
+- `SubagentStart` / `SubagentStop` - log agent activity
+- `PostToolUseFailure` - log tool failures
 
-**Agent-scoped hooks** (in agent frontmatter) - run only when agent is active:
+**Agent-scoped hooks** (in agent frontmatter) - validation runs only when agent is active:
 
 | Agent | Hooks |
 |-------|-------|

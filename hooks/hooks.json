@@ -1,4 +1,27 @@
 {
-  "description": "cmtkdot plugin - minimal global hooks. Validation is agent-scoped (in agent frontmatter).",
-  "hooks": {}
+  "description": "cmtkdot plugin - global logging/lifecycle hooks. Validation hooks are agent-scoped.",
+  "hooks": {
+    "PostToolUseFailure": [
+      {
+        "matcher": "Write|Edit",
+        "type": "command",
+        "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/common/log-tool-failure.sh\"",
+        "timeout": 5
+      }
+    ],
+    "SubagentStart": [
+      {
+        "type": "command",
+        "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/common/log-subagent-start.sh\"",
+        "timeout": 5
+      }
+    ],
+    "SubagentStop": [
+      {
+        "type": "command",
+        "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/common/log-subagent-stop.sh\"",
+        "timeout": 5
+      }
+    ]
+  }
 }
