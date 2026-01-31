@@ -1,5 +1,5 @@
 {
-  "name": "claude-development",
+  "name": "cmtkdot",
   "version": "1.3.0",
   "description": "Skills, agents, and hooks for Claude Code - create, audit, and validate with TDD methodology",
   "author": {
