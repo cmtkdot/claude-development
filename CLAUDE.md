@@ -73,21 +73,38 @@ Note: Creators include audit functionality via Stop hooks. No separate auditor a
 
 ---
 
-## Hook Format (Flat Structure)
+## Hook Format
 
-```yaml
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit"
-      type: command
-      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate.sh"'
-      once: true
-  Stop:
-    - type: command
-      command: 'bash "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/report.sh"'
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate.sh\"",
+            "once": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/report.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}
 ```
 
-Key: `matcher`, `type`, `command`, `once` all at same level (no nested `hooks:` array).
+Key: Each event has an array of objects. Each object can have `matcher` and must have a `hooks` array containing the actual hook definitions.
 
 ---
 
