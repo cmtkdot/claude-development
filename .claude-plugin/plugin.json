@@ -18,6 +18,12 @@
     "audit",
     "validation"
   ],
-  "agents": ["./agents/"],
+  "agents": [
+    "./agents/starter-agent.md",
+    "./agents/skill-creator.md",
+    "./agents/agent-creator.md",
+    "./agents/hook-creator.md",
+    "./agents/workflow-auditor.md"
+  ],
   "hooks": "./hooks/hooks.json"
 }
